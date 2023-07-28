@@ -1,0 +1,11 @@
+
+.aboutBtn{
+    width: 200px;
+}
+
+
+@media (max-width: 1200px) {
+    .aboutBtn{
+        width: 150px;
+    }
+}
