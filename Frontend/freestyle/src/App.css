@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+.accountPic{
+  width: 10vw;
+}
+
+@media (max-width: 1400px) {
+  .accountPic{
+    width: 13vw;
+  }
+}
+
+@media (max-width: 1150px) {
+  .accountPic{
+    width: 20vw;
+  }
+}

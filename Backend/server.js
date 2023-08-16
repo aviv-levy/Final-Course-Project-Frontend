@@ -20,7 +20,7 @@ const verifyAdmin = require('./verifyAdmin');
 // const adminRouter = require('./Routers/adminRouter.js')
 const loginRouter = require('./Routers/loginRouter.js')
 const registerRouter = require('./Routers/registerRouter.js')
-// const userDetailsRouter = require('./Routers/userDetailsRouter.js')
+const userRouter = require('./Routers/userRouter.js')
 
 
 async function main() {
@@ -39,7 +39,7 @@ main();
 // app.use('/admin', verifyToken, verifyAdmin, adminRouter)
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
-// app.use('/userDetails', verifyToken, userDetailsRouter);
+app.use('/user', verifyToken, userRouter);
 
 
 // http://localhost:4500/initilaize

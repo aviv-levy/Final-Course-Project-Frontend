@@ -33,6 +33,7 @@ router.post('/', async (req, res) => {
         //      else send http status 401
         if (await bcrypt.compare(password, user.password.toString())) {
             user.password = undefined;
+            user.blockTime = undefined;
             res.json({
                 token: jwt.sign({ id: user.id, email: email, isAdmin: user.isAdmin }, process.env.SECRET, { expiresIn: '24h' }),
                 userDetails: user,

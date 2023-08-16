@@ -1,17 +1,24 @@
+import '../CSS/Navbar.css'
 import { useContext, useEffect, useState } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart, faBagShopping } from '@fortawesome/free-solid-svg-icons'
 import { NavLink, Link } from 'react-router-dom'
 import { removeToken } from '../auth/TokenManager';
+import Badge from './Badge';
+import { UserContext } from '../App';
 
 function Navbar() {
 
-    const isLoggedIn = false
     const [search, setSearch] = useState('');
+
+    const isLoggedIn = useContext(UserContext);
+    const userDetails = useContext(UserContext);
 
     //Logout Function
     function handleLogOut() {
         removeToken();
-        // isLoggedIn?.setIsLoggedIn(false);
-        // userDetails?.setUserDetails(undefined);
+        isLoggedIn?.setIsLoggedIn(false);
+        userDetails?.setUserDetails(undefined);
     }
 
 
@@ -27,22 +34,16 @@ function Navbar() {
                             <NavLink to="/about" className="nav-link active" aria-current="page">About</NavLink>
                         </li>
                         {
-                            isLoggedIn &&
-                            <li className="nav-item">
-                                <NavLink to="/favorites" className="nav-link active" aria-current="page">Fav Cards</NavLink>
-                            </li>
-                        }
-                        {
-                            isLoggedIn && 
-                            <li className="nav-item">
-                                <NavLink to="/mycards" className="nav-link active" aria-current="page">My Cards</NavLink>
-                            </li>
-                        }
-                        {
-                            isLoggedIn && 
-                            <li className="nav-item">
-                                <NavLink to="/sandbox" className="nav-link active" aria-current="page">Sandbox</NavLink>
-                            </li>
+                            isLoggedIn?.isLoggedIn &&
+                            <>
+                                <li className="nav-item">
+                                    <NavLink to="/manageproducts" className="nav-link active" aria-current="page">Manage Products</NavLink>
+                                </li>
+
+                                <li className="nav-item">
+                                    <NavLink to="/sandbox" className="nav-link active" aria-current="page">Sandbox</NavLink>
+                                </li>
+                            </>
                         }
                     </ul>
                     <div className="d-flex">
@@ -56,8 +57,25 @@ function Navbar() {
                                         placeholder="Search"
                                         onChange={(e) => setSearch(e.target.value)} />
                                 </div>
-
                             </li>
+                            {
+                                isLoggedIn?.isLoggedIn &&
+                                <>
+                                    <li className="nav-item">
+                                        <NavLink to='favorites' className='position-relative text-white ms-3 me-2 fs-4'>
+                                            <FontAwesomeIcon icon={faBagShopping} />
+                                            <Badge>2</Badge>
+                                        </NavLink>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <NavLink to='favorites' className='position-relative text-white mx-3 fs-4'>
+                                            <FontAwesomeIcon icon={faHeart} />
+                                            <Badge>4</Badge>
+                                        </NavLink>
+                                    </li>
+                                </>
+                            }
                             {/* <li className="nav-item">
                                 <button onClick={handleDarkMode} className='btn mx-2'>
                                     {
@@ -75,21 +93,21 @@ function Navbar() {
 
                             </li> */}
                             {
-                                isLoggedIn ?
+                                isLoggedIn?.isLoggedIn ?
                                     <li className="nav-item">
                                         <div className="btn-group">
                                             <button className='bg-transparent border border-0 dropdown-toggle' type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <img src={
-                                                    // userDetails?.userDetails?.img ? userDetails.userDetails.img :
+                                                    userDetails?.userDetails?.img ? userDetails.userDetails.img :
                                                     "https://brsc.sa.edu.au/wp-content/uploads/2018/09/placeholder-profile-sq.jpg"}
                                                     className="navImg"
                                                     alt="user Pic" />
                                             </button>
                                             <ul className={'dropdown-menu dropdown-menu-end bg-white'}>
-                                                {/* <li><Link to={`/account/${userDetails?.userDetails?._id}`} className="nav-link active dropdown-color">Account</Link></li> */}
+                                                <li><Link to={`/account/${userDetails?.userDetails?._id}`} className="nav-link active dropdown-color text-dark">Account</Link></li>
                                                 <li><hr className="my-1" /></li>
                                                 <li>
-                                                    <button onClick={handleLogOut} className="nav-link active dropdown-color" aria-current="page">
+                                                    <button onClick={handleLogOut} className="nav-link active dropdown-color text-dark" aria-current="page">
                                                         Logout
                                                     </button>
                                                 </li>

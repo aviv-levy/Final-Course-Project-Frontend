@@ -1,0 +1,47 @@
+.product-options {
+    position: absolute;
+    bottom: -25%;
+    font-weight: bold;
+    width: 88%;
+    background-color: #000000D9;
+    transition: 0.6s;
+}
+
+.size-position {
+    position: absolute;
+    top: 0;
+    right: -25%;
+    transition: 0.6s;
+}
+
+.product-sizes {
+    height: 100%;
+}
+
+.product-sizes .sizeview {
+    background-color: rgba(153, 153, 153, 0.92);
+    padding: 0.2rem 0.4rem;
+    font-size: 0.9rem;
+    color: #fff;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    width: 4.2rem;
+
+}
+
+.product-top {
+    overflow: hidden;
+}
+
+.card:hover .product-options {
+    bottom: 0;
+}
+
+.card:hover .size-position {
+    right: 0;
+}
+
+.product-options-color {
+    color: #fefa03;
+}
+

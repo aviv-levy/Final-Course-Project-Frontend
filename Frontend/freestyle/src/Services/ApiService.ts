@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Cards, LoginUser, User } from "./Interfaces";
+import { Product, LoginUser, User } from "./Interfaces";
 import { getToken } from "../auth/TokenManager";
 
 
@@ -43,15 +43,15 @@ export async function addNewUser(user?: User): Promise<User> {
         return result.data;
 
     } catch (error: any) {
-        const httpStatusCode = error.response.status
-        throw httpStatusCode;
+        const errorText = error.response.data
+        throw errorText;
     }
 }
 
 // Get user details from token
 export async function getUserDetails(): Promise<User> {
     try {
-        const result = await axios.get<User>(serverUrl + 'userDetails', {
+        const result = await axios.get<User>(serverUrl + 'user/userDetails', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + getToken()
@@ -86,9 +86,9 @@ export async function updateUserDetails(user?: User): Promise<User> {
 }
 
 // Get All cards
-export async function getAllCards(): Promise<Array<Cards>> {
+export async function getAllCards(): Promise<Array<Product>> {
     try {
-        const result = await axios.get<Array<Cards>>(serverUrl + `cards/getAllCards`, {
+        const result = await axios.get<Array<Product>>(serverUrl + `cards/getAllCards`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -102,9 +102,9 @@ export async function getAllCards(): Promise<Array<Cards>> {
     }
 }
 // Get all user cards
-export async function getMyCards(): Promise<Array<Cards>> {
+export async function getMyCards(): Promise<Array<Product>> {
     try {
-        const result = await axios.get<Array<Cards>>(serverUrl + `cards/getMyCards`, {
+        const result = await axios.get<Array<Product>>(serverUrl + `cards/getMyCards`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + getToken()
@@ -119,9 +119,9 @@ export async function getMyCards(): Promise<Array<Cards>> {
     }
 }
 // Get user card by Id
-export async function getCardById(cardId?: string): Promise<Cards> {
+export async function getCardById(cardId?: string): Promise<Product> {
     try {
-        const result = await axios.get<Cards>(serverUrl + `cards/getCard/${cardId}`, {
+        const result = await axios.get<Product>(serverUrl + `cards/getCard/${cardId}`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -136,9 +136,9 @@ export async function getCardById(cardId?: string): Promise<Cards> {
 }
 
 // Get user favorite cards
-export async function getFavoriteCards(): Promise<Array<Cards>> {
+export async function getFavoriteCards(): Promise<Array<Product>> {
     try {
-        const result = await axios.get<Array<Cards>>(serverUrl + `cards/getFav`, {
+        const result = await axios.get<Array<Product>>(serverUrl + `cards/getFav`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + getToken()
@@ -155,9 +155,9 @@ export async function getFavoriteCards(): Promise<Array<Cards>> {
 
 
 // Add new card
-export async function addNewCard(card?: Cards): Promise<Cards> {
+export async function addNewCard(card?: Product): Promise<Product> {
     try {
-        const result = await axios.post<Cards>(serverUrl + 'cards/addNewCard', card, {
+        const result = await axios.post<Product>(serverUrl + 'cards/addNewCard', card, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + getToken()
@@ -192,7 +192,7 @@ export async function likeCard(cardId?: string): Promise<User> {
     }
 }
 // Update card by Id
-export async function updateCard(card?: Cards): Promise<string> {
+export async function updateCard(card?: Product): Promise<string> {
     try {
         const result = await axios.put<string>(serverUrl + `cards/updateCard`, card, {
             headers: {

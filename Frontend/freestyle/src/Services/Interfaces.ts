@@ -6,16 +6,15 @@ export interface User {
     phone: string;
     email: string;
     password: string;
+    address?: Address;
     img?: string,
     img_alt?: string,
-    city: string;
-    street: string,
-    housenum: number,
     biz?: boolean,
     token?: string;
     isAdmin?: boolean;
+    cart?: Array<string>;
     likedProducts?: Array<string>;
-    status: 'Active' | 'Expired' | 'Blocked';
+    status?: 'Active' | 'Expired' | 'Blocked';
 }
 
 export interface LoginUser {
@@ -23,24 +22,37 @@ export interface LoginUser {
     password?: string;
 }
 
-export interface Cards {
+export interface Product {
     _id?: string;
-    cardNumber?: number;
     title: string;
-    subtitle: string;
+    subTitle: string;
     description: string;
-    phone: string;
-    email: string;
-    web?: string;
+    brand: string;
+    type: 'Shoes' | 'Pants' | 'Underwear' | 'Shirt' | 'Top' | 'Dress';
+    gender: 'Male' | 'Female' | 'Unisex';
+    price: number;
+    stock: number;
+    measure: number | 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL'
     imageUrl?: string,
     imageAlt?: string,
-    state?: string,
-    country: string,
+    userId: string;
+}
+
+interface ProductQuantity {
+    productId: string,
+    quantity: number
+}
+
+export interface Address {
     city: string;
     street: string,
-    houseNumber: number,
-    zip?: number,
-    userId: string;
+    housenum?: number,
+}
+
+export interface Order {
+    _id?: string,
+    products: Array<ProductQuantity>,
+    userId: string
 }
 
 export interface context {
@@ -48,13 +60,13 @@ export interface context {
     setIsLoggedIn: Function,
     userDetails?: User,
     setUserDetails: Function,
-    filteredCards?: Array<Cards>,
-    setFilteredCards: Function,
-    darkMode?: boolean,
-    setDarkMode: Function
+    // filteredCards?: Array<Product>,
+    // setFilteredCards: Function,
+    // darkMode?: boolean,
+    // setDarkMode: Function
 }
 
 export interface CopyCardsContext {
-    copyCards?: Array<Cards>,
+    copyCards?: Array<Product>,
     setCopyCards: Function
 }

@@ -1,0 +1,9 @@
+.pic {
+    filter: grayscale(75%);
+    max-height: 710px;
+    transition: 1s, 1s;
+}
+
+.pic:hover{
+    filter: grayscale(10%);
+}
