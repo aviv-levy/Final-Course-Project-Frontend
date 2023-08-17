@@ -25,14 +25,14 @@ export interface LoginUser {
 export interface Product {
     _id?: string;
     title: string;
-    subTitle: string;
-    description: string;
+    subtitle: string;
+    description?: string;
     brand: string;
-    type: 'Shoes' | 'Pants' | 'Underwear' | 'Shirt' | 'Top' | 'Dress';
+    category: 'Shoes' | 'Pants' | 'Underwear' | 'Shirt' | 'Top' | 'Dress';
     gender: 'Male' | 'Female' | 'Unisex';
     price: number;
     stock: number;
-    measure: number | 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL'
+    size: number | 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL'
     imageUrl?: string,
     imageAlt?: string,
     userId: string;

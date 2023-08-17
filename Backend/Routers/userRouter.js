@@ -15,4 +15,14 @@ router.get('/userDetails', async (req, res) => {
     }
 })
 
+//http://localhost:4500/user/addProduct
+router.post('//addProduct', async (req,res) =>{
+    try {
+        
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+})
+
+
 module.exports = router;
