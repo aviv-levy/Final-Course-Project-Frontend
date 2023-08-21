@@ -13,7 +13,7 @@ const baselineValidation = {
     category: JOI.string().required().alphanum(),
     gender: JOI.string().required().alphanum(),
     price: JOI.number().required().min(1),
-    imageUrl: JOI.string().uri(),
+    imageUrl: JOI.string().base64(),
     imageAlt: JOI.string(),
     userId: JOI.string().required(),
 };

@@ -1,8 +1,7 @@
-  
   div.input-block {
     position: relative;
   }
-  
+
   div.input-block input {
     font-weight: 400;
     font-size: 1.2rem;
@@ -10,43 +9,65 @@
     padding: 4px 15px;
     width: 100%;
     border-radius: 0.375rem;
-    border: 1px solid  #D9D9D9;
-    outline:none;
+    border: 1px solid #D9D9D9;
+    outline: none;
   }
-  
+
   div.input-block span.placeholderr {
     position: absolute;
     margin: 8px 0;
     padding: 0 4px;
     font-family: Roboto, sans-serif;
-  
-    color:  #6c757d;
-  
+
+    color: #6c757d;
+
     display: flex;
     align-items: center;
-  
+
     font-size: inherit;
-  
+
     top: 0;
-  
+
     transition: all 0.2s;
     transform-origin: 0% 0%;
     background: none;
     pointer-events: none;
   }
-  
-  div.input-block input:valid + span.placeholderr,
-  div.input-block input:focus + span.placeholderr {
-  transform: scale(0.8) translateY(-28px);
-  background: #fff;
+
+  div.input-block input:valid+span.placeholderr,
+  div.input-block input:focus+span.placeholderr {
+    transform: scale(0.8) translateY(-28px);
+    background: #fff;
   }
-  
-  div.input-block input:focus{
-  color: #284B63;
-  border-color: #284B63;
+
+  div.input-block input:focus {
+    color: #284B63;
+    border-color: #284B63;
   }
-  
-  div.input-block input:focus + span.placeholderr {
-  color: #284B63;
+
+  div.input-block input:focus+span.placeholderr {
+    color: #284B63;
   }
-  
+
+  .roundbtn {
+    padding: 0px 8px;
+    font-size: 18px;
+  }
+
+  .btnwidth{
+    width: 30px;
+  }
+
+  .countinput {
+    width: 50px;
+    text-align: center;
+  }
+  .countinput:focus {
+    outline: none;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }

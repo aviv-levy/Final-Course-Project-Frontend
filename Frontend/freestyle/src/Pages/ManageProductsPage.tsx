@@ -2,14 +2,17 @@ import { useState } from "react";
 import '../CSS/ManageProducts.css'
 import CountButton from "../Components/CountButton";
 import { fileToBase64 } from "../Utils/fileToString";
+import { Product } from "../Services/Interfaces";
 
 function ManageProductsPage() {
 
-    const [myUrl, setMyURL] = useState('');
+
+    const [product, setProduct] = useState<Product>();
+    const [uploadedImg, setUploadedImg] = useState('');
 
 
     async function fileRecieved(file: File) {
-        setMyURL(await fileToBase64(file))
+        setUploadedImg(await fileToBase64(file))
     }
 
     function handleClick() {
@@ -17,16 +20,16 @@ function ManageProductsPage() {
     }
 
     function handleClear() {
-        setMyURL('');
+        setUploadedImg('');
     }
 
     return (
-        <div className="container my-auto">
-            <div className="row d-flex align-items-center">
-
+        <div className="container my-5">
+            <div className="row d-flex">
+                <div className="col-2"></div>
                 <div className="col-4">
                     {
-                        myUrl === '' ?
+                        uploadedImg === '' ?
                             <>
                                 <input type="file" id='myfile' accept="image/*" className='file-upload' onChange={(e: any) => fileRecieved(e.target.files[0])} />
                                 <label htmlFor="myfile" className='image-upload'>
@@ -35,7 +38,7 @@ function ManageProductsPage() {
                                 </label>
                             </>
                             :
-                            <img src={myUrl} alt="" className='img-thumbnail' />
+                            <img src={uploadedImg} alt="" className='img-thumbnail' />
                     }
                     <div className="w-100 text-center mt-4">
                         <button onClick={handleClear} className='btn btn-dark px-4 me-1'>Clear</button>
@@ -60,7 +63,8 @@ function ManageProductsPage() {
 
                         <span>Category: </span>
                         <select name="category" className='form-select border-black'>
-                            <option selected value="Shoes">Shoes</option>
+                            <option value="Shirts">Shirts</option>
+                            <option value="Shoes">Shoes</option>
                             <option value="Pants">Pants</option>
                             <option value="Dresses">Dresses</option>
                             <option value="Tops">Tops</option>
@@ -94,9 +98,15 @@ function ManageProductsPage() {
                             <input type="number" className="form-control border-dark" /> <span className='fs-3'>₪</span>
                         </div>
 
+                    <div className="w-100 mt-4">
+                        <button className="btn btn-dark w-100">Add Product</button>
+                    </div>
                     </form>
 
 
+                </div>
+                <div className="col">
+                    <button>+ Add New Size</button>
                 </div>
             </div>
         </div>
