@@ -2,14 +2,16 @@ import { useState } from "react";
 import '../CSS/ManageProducts.css'
 import CountButton from "../Components/CountButton";
 import { fileToBase64 } from "../Utils/fileToString";
-import { Product } from "../Services/Interfaces";
+import { Product, SizeQuantity } from "../Services/Interfaces";
+
 
 function ManageProductsPage() {
 
 
     const [product, setProduct] = useState<Product>();
     const [uploadedImg, setUploadedImg] = useState('');
-
+    const [sizesQuantity, setSizesQuantity] = useState<Array<SizeQuantity>>();
+    const [showAddSize, SetShowAddSize] = useState(false);
 
     async function fileRecieved(file: File) {
         setUploadedImg(await fileToBase64(file))
@@ -26,8 +28,8 @@ function ManageProductsPage() {
     return (
         <div className="container my-5">
             <div className="row d-flex">
-                <div className="col-2"></div>
-                <div className="col-4">
+                <div className="col-1"></div>
+                <div className="col-4 align-self-center">
                     {
                         uploadedImg === '' ?
                             <>
@@ -91,22 +93,39 @@ function ManageProductsPage() {
                         <label className='w-100'>Description:</label>
                         <textarea className="form-control border-dark" aria-label="With textarea"></textarea>
 
-                        <CountButton size='Large' />
 
                         <label className='w-100'>Price:</label>
                         <div className="d-flex">
                             <input type="number" className="form-control border-dark" /> <span className='fs-3'>₪</span>
                         </div>
 
-                    <div className="w-100 mt-4">
-                        <button className="btn btn-dark w-100">Add Product</button>
-                    </div>
+                        <div className="w-100 mt-4">
+                            <button className="btn btn-dark w-100">Add Product</button>
+                        </div>
                     </form>
 
 
                 </div>
-                <div className="col">
-                    <button>+ Add New Size</button>
+                <div className="col-3 mt-3">
+                    <CountButton size="L" />
+                    {
+                        !showAddSize ?
+                            <div onClick={() => SetShowAddSize(true)} className="add-newSize fs-5 p-2 d-flex align-items-center"><div className="add-newSizePlus badge fs-5 p-1 pt-0 mx-2">+</div>Add New Size</div>
+                            :
+                            <div>
+                                {
+                                    sizesQuantity?.map(newSize =>
+                                        <CountButton size={newSize.size} />)
+                                }
+                                <button className="btn btn-outline-dark me-2" >XS</button>
+                                <button className="btn btn-outline-dark me-2">S</button>
+                                <button className="btn btn-outline-dark me-2">M</button>
+                                <button className="btn btn-outline-dark me-2">L</button>
+                                <button className="btn btn-outline-dark me-2">XL</button>
+                                <button className="btn btn-outline-dark me-2">XXL</button>
+                            </div>
+
+                    }
                 </div>
             </div>
         </div>

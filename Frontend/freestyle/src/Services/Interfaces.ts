@@ -38,9 +38,13 @@ export interface Product {
     userId: string;
 }
 
+export interface SizeQuantity {
+    size: number | 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL';
+    quantity: number;
+}
 interface ProductQuantity {
     productId: string,
-    quantity: number
+    quantity: SizeQuantity
 }
 
 export interface Address {
@@ -52,6 +56,7 @@ export interface Address {
 export interface Order {
     _id?: string,
     products: Array<ProductQuantity>,
+    address: Address,
     userId: string
 }
 

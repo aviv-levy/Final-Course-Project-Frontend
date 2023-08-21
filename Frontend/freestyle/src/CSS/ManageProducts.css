@@ -13,3 +13,14 @@
   .file-upload{
     display: none;
   }
+
+  .add-newSize{
+    border: 2px dotted #d1d1d1;
+    color: #585858;
+    cursor: pointer;
+  }
+
+  .add-newSizePlus{
+    border: 2px dotted #d1d1d1;
+    color: #585858;
+  }

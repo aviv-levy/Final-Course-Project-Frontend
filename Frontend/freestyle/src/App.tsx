@@ -17,6 +17,7 @@ import { getUserDetails } from './Services/ApiService';
 import RegisterPage from './Pages/RegisterPage';
 import ManageProductsPage from './Pages/ManageProductsPage';
 import EditUserPage from './Pages/EditUserPage';
+import CartPage from './Pages/CartPage';
 
 
 export const UserContext = createContext<context | null>(null);
@@ -62,6 +63,7 @@ function App() {
               <Route path='/register' element={<RegisterPage />} />
               <Route path='/manageproducts' element={<ManageProductsPage />} />
               <Route path='/favorites' element={<FavoritesPage />} />
+              <Route path='/cart' element={<CartPage />} />
               <Route path='/account/:userId' element={<EditUserPage />} />
             </Routes>
 

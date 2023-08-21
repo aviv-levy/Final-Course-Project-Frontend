@@ -62,7 +62,7 @@ function Navbar() {
                                 isLoggedIn?.isLoggedIn &&
                                 <>
                                     <li className="nav-item">
-                                        <NavLink to='favorites' className='position-relative text-white ms-3 me-2 fs-4'>
+                                        <NavLink to='cart' className='position-relative text-white ms-3 me-2 fs-4'>
                                             <FontAwesomeIcon icon={faBagShopping} />
                                             <Badge>2</Badge>
                                         </NavLink>
