@@ -28,18 +28,18 @@ export interface Product {
     subtitle: string;
     description?: string;
     brand: string;
-    category: 'Shoes' | 'Pants' | 'Underwear' | 'Shirt' | 'Top' | 'Dress';
+    category: string;
     gender: 'Male' | 'Female' | 'Unisex';
     price: number;
     stock: number;
-    size: number | 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL'
+    sizeQuantity: Array<SizeQuantity>
     imageUrl?: string,
     imageAlt?: string,
     userId: string;
 }
 
 export interface SizeQuantity {
-    size: number | 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL';
+    size: number | string;
     quantity: number;
 }
 interface ProductQuantity {
