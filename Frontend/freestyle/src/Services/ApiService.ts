@@ -154,10 +154,10 @@ export async function getFavoriteCards(): Promise<Array<Product>> {
 }
 
 
-// Add new card
-export async function addNewCard(card?: Product): Promise<Product> {
+// Add new product
+export async function addNewProduct(product?: Product): Promise<Product> {
     try {
-        const result = await axios.post<Product>(serverUrl + 'cards/addNewCard', card, {
+        const result = await axios.post<Product>(serverUrl + 'user/addProduct', product, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + getToken()
@@ -168,7 +168,7 @@ export async function addNewCard(card?: Product): Promise<Product> {
     } catch (error: any) {
         console.log(error);
 
-        const httpStatusCode = error.response.status
+        const httpStatusCode = error.response.data
         throw httpStatusCode;
     }
 }

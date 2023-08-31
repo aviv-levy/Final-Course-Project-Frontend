@@ -1,19 +1,24 @@
 const JOI = require("joi");
 const mongoose = require("mongoose");
-const productModelScheme = require('../Schemas/userSchema.js');
+const productModelScheme = require('../Schemas/productSchema.js');
 
 
 
 // JOI Validations
 const baselineValidation = {
-    title: JOI.string().required().min(2).max(20).alphanum(),
-    subtitle: JOI.string().required().min(2).max(20).alphanum(),
-    description: JOI.string().alphanum(),
-    brand: JOI.string().required().min(2).max(20).alphanum(),
-    category: JOI.string().required().alphanum(),
-    gender: JOI.string().required().alphanum(),
+    sizeQuantity: JOI.array().items( 
+        JOI.object().keys({
+        size: JOI.string().alphanum().required(),
+        quantity: JOI.number().positive().greater(0).required()
+    })),
+    title: JOI.string().required().min(2).max(20),
+    subtitle: JOI.string().required().min(2).max(20),
+    description: JOI.string(),
+    brand: JOI.string(),
+    category: JOI.string().required(),
+    gender: JOI.string().required(),
     price: JOI.number().required().min(1),
-    imageUrl: JOI.string().base64(),
+    img: JOI.string().base64(),
     imageAlt: JOI.string(),
     userId: JOI.string().required(),
 };

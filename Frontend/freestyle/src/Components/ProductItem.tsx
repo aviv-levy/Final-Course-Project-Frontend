@@ -12,7 +12,7 @@ interface Props {
     price: number
 }
 
-function Product({ title, subtitle, img, alt_img, price }: Props) {
+function ProductItem({ title, subtitle, img, alt_img, price }: Props) {
 
 
     const navigate = useNavigate();
@@ -118,6 +118,6 @@ function Product({ title, subtitle, img, alt_img, price }: Props) {
     );
 }
 
-export default Product;
+export default ProductItem;
 
 

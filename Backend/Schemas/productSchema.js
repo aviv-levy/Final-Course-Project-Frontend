@@ -9,8 +9,11 @@ const ProductSchema = new mongoose.Schema({
     category: String,
     gender: String,
     price: Number,
-    stock: Object,
-    img: String,
+    sizeQuantity: Array,
+    img: {
+        type: String,
+        default: 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg'
+    },
     img_alt: String,
     userId: String
 })

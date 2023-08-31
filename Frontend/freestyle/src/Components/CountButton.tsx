@@ -6,28 +6,27 @@ import { AddSizeContext } from "../Pages/ManageProductsPage";
 
 interface Props {
     size: number | string;
+    removeButton?: boolean;
 }
 
 
-function CountButton({ size }: Props) {
+function CountButton({ size, removeButton }: Props) {
 
     const sizesContext = useContext(AddSizeContext);
     const [quantity, setQuantity] = useState(1)
 
+    //Set new size and quantity to a product
     function setSize(newQuantity: number) {
-        sizesContext?.sizesQuantity.map((item) => {
-            if (item.size === size)
-                item.quantity = newQuantity
-        })
+        sizesContext?.sizesQuantity.forEach(item => item.size === size && (item.quantity = newQuantity));
         setQuantity(newQuantity);
         sizesContext?.setSizesQuantity(sizesContext?.sizesQuantity)
     }
-
+    //Handle Increase button
     function handleIncrease(e: FormEvent) {
         e.preventDefault();
         setSize(quantity + 1)
     }
-
+    //Handle Decrease button
     function handleDecrease(e: FormEvent) {
         e.preventDefault();
         if (quantity > 1)
@@ -36,11 +35,7 @@ function CountButton({ size }: Props) {
 
     //Handle Remove count button
     function handleRemove() {
-
-        sizesContext?.sizes.map(disabledSize => {
-            if (size === disabledSize.size)
-                disabledSize.isDisabled = false
-        })
+        sizesContext?.sizes.forEach(disabledSize => disabledSize.size === size && (disabledSize.isDisabled = false));
         sizesContext?.setSizes(sizesContext?.sizes);
         sizesContext?.setSizesQuantity(sizesContext?.sizesQuantity.filter(item => item.size !== size))
     }
@@ -60,9 +55,12 @@ function CountButton({ size }: Props) {
                 <div className="btnwidth">
                     <button onClick={handleIncrease} className="btn btn-dark roundbtn">+</button>
                 </div>
-                <div className="w-100 text-end">
-                    <button onClick={handleRemove} className="btn btn-danger roundbtn"><FontAwesomeIcon icon={faTrash} className="icon-size me-1" /><span className="fs-6">Remove</span></button>
-                </div>
+                {
+                    removeButton &&
+                    <div className="w-100 text-end">
+                        <button onClick={handleRemove} className="btn btn-danger roundbtn"><FontAwesomeIcon icon={faTrash} className="icon-size me-1" /><span className="fs-6">Remove</span></button>
+                    </div>
+                }
             </div>
         </div>
     );

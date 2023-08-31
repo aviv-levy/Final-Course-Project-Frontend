@@ -1,9 +1,10 @@
-import { FormEvent, createContext, useState } from "react";
+import { FormEvent, createContext, useState, useEffect } from "react";
 import '../CSS/ManageProducts.css'
 import CountButton from "../Components/CountButton";
 import { fileToBase64 } from "../Utils/fileToString";
 import { Product, SizeQuantity } from "../Services/Interfaces";
 import StyledInput from "../Components/StyledInput";
+import { addNewProduct } from "../Services/ApiService";
 
 interface SizesBtns {
     size: string;
@@ -32,12 +33,15 @@ function ManageProductsPage() {
         setUploadedImg(await fileToBase64(file))
     }
 
-    function handleAddProduct(e: FormEvent) {
+    async function handleAddProduct(e: FormEvent) {
         e.preventDefault();
-        if (product)
-            setProduct({ ...product, sizeQuantity: sizesQuantity })
 
-        console.log(product);
+        await addNewProduct(product).then(() => {
+            console.log('Product added');
+        }).catch((err) => {
+            console.log(err);
+
+        })
     }
 
     function handleClear() {
@@ -45,13 +49,13 @@ function ManageProductsPage() {
     }
 
     function handleSize(newSize: string) {
-        sizes.map(size => {
-            if (size.size === newSize)
-                size.isDisabled = true
-        }
-        )
+        sizes.forEach(size => size.size === newSize && (size.isDisabled = true));
         setSizesQuantity(prevState => [...prevState, { size: newSize, quantity: 1 }]);
     }
+
+    useEffect(() => {
+        setProduct({ ...product, sizeQuantity: sizesQuantity } as Product);
+    }, [sizesQuantity])
 
     return (
         <div className="container my-5">
@@ -85,9 +89,9 @@ function ManageProductsPage() {
                         <StyledInput inputParam="description" placeholder="Description" setValueFunc={setProduct} type="text" />
 
                         <span>Brand: </span>
-                        <select name="brand" 
-                        className='form-select border-black'
-                        onChange={(e) => setProduct((prevState: any) => ({ ...prevState, brand: e.target.value }))}>
+                        <select name="brand"
+                            className='form-select border-black'
+                            onChange={(e) => setProduct((prevState: any) => ({ ...prevState, brand: e.target.value }))}>
                             <option value={undefined}></option>
                             <option value="Nike">Nike</option>
                             <option value="GAP">GAP</option>
@@ -153,7 +157,7 @@ function ManageProductsPage() {
                         <div>
                             {
                                 sizesQuantity.map((newSize, index) =>
-                                    <CountButton key={index} size={newSize.size} />)
+                                    <CountButton key={index} size={newSize.size} removeButton />)
                             }
                         </div>
                     </AddSizeContext.Provider>
