@@ -2,7 +2,7 @@ import { FormEvent, createContext, useState, useEffect } from "react";
 import '../CSS/AddProduct.css'
 import CountButton from "../Components/CountButton";
 import { fileToBase64 } from "../Utils/fileToString";
-import { Product, SizeQuantity } from "../Services/Interfaces";
+import { CropperContext, Product, SizeQuantity} from "../Services/Interfaces";
 import StyledInput from "../Components/StyledInput";
 import { addNewProduct } from "../Services/ApiService";
 import CropperBox from "../Components/CropperBox";
@@ -10,12 +10,6 @@ import CropperBox from "../Components/CropperBox";
 interface SizesBtns {
     size: string;
     isDisabled: boolean;
-}
-interface CropperContext {
-    showCropper: boolean;
-    setShowCropper: Function;
-    uploadedImg: string;
-    setUploadedImg: Function;
 }
 
 interface AddSizeContext {
@@ -26,7 +20,7 @@ interface AddSizeContext {
 }
 
 export const AddSizeContext = createContext<AddSizeContext | null>(null);
-export const CropperContext = createContext<CropperContext | null>(null);
+export const Croppercontext = createContext<CropperContext | null>(null);
 
 function AddProductPage() {
 
@@ -70,11 +64,11 @@ function AddProductPage() {
     return (
         <>
             {showCropper ?
-                <CropperContext.Provider value={{ showCropper, setShowCropper, uploadedImg, setUploadedImg }}>
+                <Croppercontext.Provider value={{ showCropper, setShowCropper, uploadedImg, setUploadedImg }}>
 
                     <CropperBox />
 
-                </CropperContext.Provider>
+                </Croppercontext.Provider>
                 :
                 <div className="container my-5">
                     <div className="row d-flex">

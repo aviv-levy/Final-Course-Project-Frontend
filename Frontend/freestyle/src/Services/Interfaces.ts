@@ -75,3 +75,10 @@ export interface CopyCardsContext {
     copyCards?: Array<Product>,
     setCopyCards: Function
 }
+
+export interface CropperContext {
+    showCropper: boolean;
+    setShowCropper: Function;
+    uploadedImg: string;
+    setUploadedImg: Function;
+}

@@ -2,7 +2,7 @@ import { useState, useCallback, FormEvent, useContext } from 'react'
 import '../CSS/Cropper.css'
 import Cropper, { Area, Point } from 'react-easy-crop'
 import getCroppedImg from '../Utils/cropImage';
-import { CropperContext } from '../Pages/AddProductPage';
+import { Croppercontext } from '../Pages/AddProductPage';
 
 function CropperBox() {
 
@@ -11,8 +11,8 @@ function CropperBox() {
     const [rotation, setRotation] = useState(0)
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
 
-    const showCropper = useContext(CropperContext);
-    const setCroppedImage = useContext(CropperContext);
+    const showCropper = useContext(Croppercontext);
+    const setCroppedImage = useContext(Croppercontext);
 
     const onCropComplete = useCallback(
         (croppedArea: Area, croppedAreaPixels: Area) => {
