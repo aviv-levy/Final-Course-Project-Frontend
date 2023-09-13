@@ -24,6 +24,35 @@ export function isRegisterUserValid(user: User, setError: Function): boolean {
     return true;
 }
 
+export function isUpdateUserValid(user: User, setError: Function): boolean {
+    const errArray: string[] = [];
+    isTextValid(user.firstname) ? errArray[0] = 'First Name must have 2 or more letters' : errArray[0] = '';
+    isTextValid(user.lastname) ? errArray[1] = 'Last Name must have 2 or more letters' : errArray[1] = '';
+    isPhoneValid(user.phone) ? errArray[2] = 'Phone is not valid' : errArray[2] = '';
+    isEmailValid(user.email) ? errArray[3] = 'Email is not valid' : errArray[3] = '';
+    if (user.password)
+        isPasswordValid(user.password) ? errArray[4] = 'Password is not valid' : errArray[4] = '';
+
+    if (user.address?.city)
+        isTextValid(user.address?.city) ? errArray[5] = 'City is not valid' : errArray[5] = '';
+
+    if (user.address?.street)
+        isTextValid(user.address?.street) ? errArray[6] = 'Street is not valid' : errArray[6] = '';
+
+    if (user.address?.housenum)
+        isHouseNumberValid(user.address?.housenum) ? errArray[7] = 'House Number must be above 0' : errArray[7] = '';
+
+    setError(errArray);
+
+    let flag = true
+    errArray.forEach((err) => {
+        if (err !== '')
+            flag = false
+    })
+
+    return flag;
+}
+
 
 export function isEmailValid(email: string): boolean {
     if (!validEmail.test(email))

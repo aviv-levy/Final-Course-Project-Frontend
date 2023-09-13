@@ -2,7 +2,7 @@ import { useState, FormEvent, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import '../CSS/inputs.css'
-import { AddSizeContext } from "../Pages/ManageProductsPage";
+import { AddSizeContext } from "../Pages/AddProductPage";
 
 interface Props {
     size: number | string;

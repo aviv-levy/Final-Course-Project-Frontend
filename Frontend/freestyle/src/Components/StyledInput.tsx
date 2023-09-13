@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import '../CSS/inputs.css'
 import { User } from '../Services/Interfaces';
 import Error from './Error';
 
 interface Props {
     type: "text" | "password" | "email" | "number" | "radio";
+    inputValue?: string | number;
     placeholder: string;
     inputParam: string;
     setValueFunc: Function;
@@ -11,7 +13,9 @@ interface Props {
     errorText?: string;
 }
 
-function StyledInput({ type, placeholder, setValueFunc, inputParam, id, errorText }: Props) {
+function StyledInput({ type, inputValue, placeholder, setValueFunc, inputParam, id, errorText }: Props) {
+
+    const [inputValueState, setInputValueState] = useState(inputValue);
 
     return (
         <>
@@ -33,7 +37,11 @@ function StyledInput({ type, placeholder, setValueFunc, inputParam, id, errorTex
                     <div className="form-group input-block mb-4">
                         <input
                             type={type}
-                            onChange={(e) => setValueFunc((prevState: User) => ({ ...prevState, [inputParam]: type === 'number' ? +e.target.value : e.target.value }))}
+                            value={inputValueState || ''}
+                            onChange={(e) => {
+                                setInputValueState(e.target.value)
+                                setValueFunc((prevState: User) => ({ ...prevState, [inputParam]: type === 'number' ? +e.target.value : e.target.value }))
+                            }}
                             required />
                         <span className="placeholderr mx-2">{placeholder}</span>
                         <Error errorText={errorText} />

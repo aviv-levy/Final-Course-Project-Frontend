@@ -33,7 +33,7 @@ export interface Product {
     price: number;
     stock: number;
     sizeQuantity: Array<SizeQuantity>
-    imageUrl?: string,
+    img?: string,
     imageAlt?: string,
     userId: string;
 }
@@ -48,8 +48,8 @@ interface ProductQuantity {
 }
 
 export interface Address {
-    city: string;
-    street: string,
+    city?: string;
+    street?: string,
     housenum?: number,
 }
 

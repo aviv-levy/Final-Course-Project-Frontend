@@ -10,6 +10,8 @@ const app = express();
 const bodyParser = require('body-parser');
 
 const cors = require('cors');
+app.use(bodyParser.json({ limit: '25mb' }));
+app.use(bodyParser.urlencoded({ limit: '25mb' }));
 
 app.use(cors());
 app.use(bodyParser.json())
@@ -21,6 +23,7 @@ const verifyAdmin = require('./verifyAdmin');
 const loginRouter = require('./Routers/loginRouter.js')
 const registerRouter = require('./Routers/registerRouter.js')
 const userRouter = require('./Routers/userRouter.js')
+const productRouter = require('./Routers/productRouter.js')
 
 
 async function main() {
@@ -40,6 +43,7 @@ main();
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 app.use('/user', verifyToken, userRouter);
+app.use('/products', productRouter);
 
 
 // http://localhost:4500/initilaize

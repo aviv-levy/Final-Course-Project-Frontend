@@ -18,6 +18,7 @@ import RegisterPage from './Pages/RegisterPage';
 import ManageProductsPage from './Pages/ManageProductsPage';
 import EditUserPage from './Pages/EditUserPage';
 import CartPage from './Pages/CartPage';
+import AddProductPage from './Pages/AddProductPage';
 
 
 export const UserContext = createContext<context | null>(null);
@@ -62,6 +63,7 @@ function App() {
               <Route path='/login' element={<LoginPage />} />
               <Route path='/register' element={<RegisterPage />} />
               <Route path='/manageproducts' element={<ManageProductsPage />} />
+              <Route path='/manageproducts/addProduct' element={<AddProductPage />} />
               <Route path='/favorites' element={<FavoritesPage />} />
               <Route path='/cart' element={<CartPage />} />
               <Route path='/account/:userId' element={<EditUserPage />} />

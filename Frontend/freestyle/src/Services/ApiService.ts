@@ -61,16 +61,16 @@ export async function getUserDetails(): Promise<User> {
         return result.data;
 
     } catch (error: any) {
-        const httpStatusCode = error.response.status
-        throw httpStatusCode;
+        const errorText = error.response.data
+        throw errorText;
     }
 }
 
 
-// Update user details by Id
-export async function updateUserDetails(user?: User): Promise<User> {
+// Update user account
+export async function updateAccount(user?: User): Promise<User> {
     try {
-        const result = await axios.put<User>(serverUrl + `userDetails/updateUser`, user, {
+        const result = await axios.put<User>(serverUrl + `user/updateAccount`, user, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getToken()}`
@@ -80,15 +80,19 @@ export async function updateUserDetails(user?: User): Promise<User> {
         return result.data;
 
     } catch (error: any) {
-        const httpStatusCode = error.response.status
-        throw httpStatusCode;
+        const errorText = error.response.data
+        throw errorText;
     }
 }
 
-// Get All cards
-export async function getAllCards(): Promise<Array<Product>> {
+// Get All products
+export async function getProductByCategory(gender: string, category: string): Promise<Array<Product>> {
     try {
-        const result = await axios.get<Array<Product>>(serverUrl + `cards/getAllCards`, {
+        if(gender === 'men')
+            gender = 'Male'
+        else if(gender === 'women')
+            gender = 'Female'
+        const result = await axios.get<Array<Product>>(serverUrl + `products/getProductByCategory/${gender}/${category}`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -97,14 +101,14 @@ export async function getAllCards(): Promise<Array<Product>> {
         return result.data;
 
     } catch (error: any) {
-        const httpStatusCode = error.response.status
-        throw httpStatusCode;
+        const errorText = error.response.data
+        throw errorText;
     }
 }
-// Get all user cards
-export async function getMyCards(): Promise<Array<Product>> {
+// Get all user products
+export async function getMyProducts(): Promise<Array<Product>> {
     try {
-        const result = await axios.get<Array<Product>>(serverUrl + `cards/getMyCards`, {
+        const result = await axios.get<Array<Product>>(serverUrl + `products/getMyProducts`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + getToken()
@@ -114,8 +118,8 @@ export async function getMyCards(): Promise<Array<Product>> {
         return result.data;
 
     } catch (error: any) {
-        const httpStatusCode = error.response.status
-        throw httpStatusCode;
+        const errorText = error.response.data
+        throw errorText;
     }
 }
 // Get user card by Id
@@ -130,8 +134,8 @@ export async function getCardById(cardId?: string): Promise<Product> {
         return result.data;
 
     } catch (error: any) {
-        const httpStatusCode = error.response.status
-        throw httpStatusCode;
+        const errorText = error.response.data
+        throw errorText;
     }
 }
 
@@ -148,8 +152,8 @@ export async function getFavoriteCards(): Promise<Array<Product>> {
         return result.data;
 
     } catch (error: any) {
-        const httpStatusCode = error.response.status
-        throw httpStatusCode;
+        const errorText = error.response.data
+        throw errorText;
     }
 }
 
@@ -187,8 +191,8 @@ export async function likeCard(cardId?: string): Promise<User> {
         return result.data;
 
     } catch (error: any) {
-        const httpStatusCode = error.response.status
-        throw httpStatusCode;
+        const errorText = error.response.data
+        throw errorText;
     }
 }
 // Update card by Id
@@ -204,8 +208,8 @@ export async function updateCard(card?: Product): Promise<string> {
         return result.data;
 
     } catch (error: any) {
-        const httpStatusCode = error.response.status
-        throw httpStatusCode;
+        const errorText = error.response.data
+        throw errorText;
     }
 }
 // Delete card by Id
@@ -219,8 +223,8 @@ export async function deleteCard(cardId?: string): Promise<void> {
         })
 
     } catch (error: any) {
-        const httpStatusCode = error.response.status
-        throw httpStatusCode;
+        const errorText = error.response.data
+        throw errorText;
     }
 }
 
@@ -238,8 +242,8 @@ export async function getAllUsers(): Promise<Array<User>> {
         return result.data;
 
     } catch (error: any) {
-        const httpStatusCode = error.response.status
-        throw httpStatusCode;
+        const errorText = error.response.data
+        throw errorText;
     }
 }
 
@@ -256,8 +260,8 @@ export async function updateUserStatus(userId?: string): Promise<Array<User>> {
         return result.data;
 
     } catch (error: any) {
-        const httpStatusCode = error.response.status
-        throw httpStatusCode;
+        const errorText = error.response.data
+        throw errorText;
     }
 }
 
@@ -273,8 +277,8 @@ export async function deleteUser(userId?: string): Promise<Array<User>> {
         return result.data;
 
     } catch (error: any) {
-        const httpStatusCode = error.response.status
-        throw httpStatusCode;
+        const errorText = error.response.data
+        throw errorText;
     }
 }
 
@@ -291,7 +295,7 @@ export async function updateUserBiz(userId?: string): Promise<Array<User>> {
         return result.data;
 
     } catch (error: any) {
-        const httpStatusCode = error.response.status
-        throw httpStatusCode;
+        const errorText = error.response.data
+        throw errorText;
     }
 }
