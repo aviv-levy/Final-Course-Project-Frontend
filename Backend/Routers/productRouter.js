@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const UserModel = require('../Models/userRegisterModel');
 const ProductModel = require("../Models/productModel");
 const verifyToken = require("../verifyToken");
 
@@ -13,7 +14,7 @@ router.get('/getProductByCategory/:gender/:category', async (req, res) => {
 
         const Products = await ProductModel.find({
             $or: [
-                { gender: gender, category: category  },
+                { gender: gender, category: category },
                 { gender: 'Unisex', category: category }
             ]
         });
@@ -35,6 +36,34 @@ router.get('/getMyProducts', verifyToken, async (req, res) => {
             res.status(404).send('not found any')
 
         res.status(200).json(Products);
+
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+})
+
+// http://localhost:4500/products/getProduct/:productId
+router.get('/getProduct/:productId', async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        const Product = await ProductModel.findOne({ _id: productId });
+        if (Product === null)
+            res.status(404).send('not found any')
+
+        res.status(200).json(Product);
+
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+})
+
+// http://localhost:4500/products/getFav
+router.get('/getFav', verifyToken, async (req, res) => {
+    try {
+        const user = await UserModel.findOne({ _id: req.id });
+
+        const favCards = await ProductModel.find({ _id: { $in: user.favoriteProducts } })
+        res.status(200).json(favCards);
 
     } catch (err) {
         res.status(500).send(err.message);

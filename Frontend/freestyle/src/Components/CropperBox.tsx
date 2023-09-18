@@ -1,18 +1,22 @@
-import { useState, useCallback, FormEvent, useContext } from 'react'
+import { useState, useCallback, FormEvent, useContext, useEffect } from 'react'
 import '../CSS/Cropper.css'
 import Cropper, { Area, Point } from 'react-easy-crop'
 import getCroppedImg from '../Utils/cropImage';
-import { Croppercontext } from '../Pages/AddProductPage';
 
-function CropperBox() {
+interface Props {
+    uploadingImage: string,
+    setShowCropper: Function,
+    setCroppedImage: Function,
+    updateImgServer?: Function
+}
+
+function CropperBox({ uploadingImage, setShowCropper, setCroppedImage, updateImgServer }: Props) {
 
     const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1.1);
     const [rotation, setRotation] = useState(0)
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
-
-    const showCropper = useContext(Croppercontext);
-    const setCroppedImage = useContext(Croppercontext);
+    const [isCropped, setIsCropped] = useState(false);
 
     const onCropComplete = useCallback(
         (croppedArea: Area, croppedAreaPixels: Area) => {
@@ -22,25 +26,32 @@ function CropperBox() {
         []
     );
 
+    useEffect(() => {
+        if (updateImgServer && isCropped) {
+            updateImgServer();
+            setShowCropper(false)
+        }
+    }, [isCropped])
 
     function handleCrop(e: FormEvent) {
         e.preventDefault();
 
-        showCropper?.setShowCropper(false)
+        if (updateImgServer === undefined)
+            setShowCropper(false)
         showCroppedImage();
     }
 
     const showCroppedImage = useCallback(async () => {
         try {
-            if (showCropper?.uploadedImg) {
-                const croppedImage = await getCroppedImg(
-                    showCropper?.uploadedImg,
-                    croppedAreaPixels,
-                    rotation
-                )
-                // console.log('donee', { croppedImage })
-                setCroppedImage?.setUploadedImg(croppedImage)
-            }
+            const croppedImage = await getCroppedImg(
+                uploadingImage,
+                croppedAreaPixels,
+                rotation
+            )
+            // console.log('donee', { croppedImage })
+            setCroppedImage(croppedImage)
+            setIsCropped(true)
+
         } catch (e) {
             console.error(e)
         }
@@ -51,7 +62,7 @@ function CropperBox() {
         <div className="App">
             <div className="crop-container">
                 <Cropper
-                    image={showCropper?.uploadedImg}
+                    image={uploadingImage}
                     crop={crop}
                     zoom={zoom}
                     aspect={1 / 1}

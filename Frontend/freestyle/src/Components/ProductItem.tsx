@@ -1,7 +1,10 @@
 import '../CSS/Product.css'
 import { faEdit, faHeart, faTrash, faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useContext, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { addToCart, likeProduct } from '../Services/ApiService';
+import { UserContext } from '../App';
 
 
 interface Props {
@@ -16,22 +19,34 @@ interface Props {
 
 function ProductItem({ id, title, subtitle, img, alt_img, price, addProduct }: Props) {
 
-
+    const [like, setLike] = useState(false);
+    const [cart, setCart] = useState(false);
     const navigate = useNavigate();
 
-    //Like or dislike handle button
+    const userDetails = useContext(UserContext);
+
+
+    //Like or dislike handle button.
     async function handleLike() {
-        // if (removeLike && like)
-        //     removeLike(cardId);
-        // setLike(!like)
-        // await likeCard(cardId)
-        //     .then((user) => {
-        //         userDetails?.setUserDetails(user)
-        //     })
-        //     .catch((err) => { if (err) return; })
+        setLike(!like)
+        await likeProduct(id)
+            .then((user) => {
+                userDetails?.setUserDetails(user)
+            })
+            .catch((err) => { if (err) return; })
     }
 
-    //Delete card handle button
+    //Add or remove products from cart.
+    async function handleCart() {
+        setCart(!cart);
+        await addToCart(id)
+            .then((user) => {
+                userDetails?.setUserDetails(user)
+            })
+            .catch((err) => { if (err) return; })
+    }
+
+    //Delete card handle button.
     async function handleDelete() {
         // await deleteCard(cardId)
         //     .then(() => {
@@ -49,6 +64,19 @@ function ProductItem({ id, title, subtitle, img, alt_img, price, addProduct }: P
         navigate(`/editCard/`)
     }
 
+    useEffect(() => {
+        userDetails?.userDetails?.favoriteProducts?.forEach((product) => {
+            if (product === id)
+                setLike(true);
+        })
+        userDetails?.userDetails?.cartProducts?.forEach((product) => {
+            if (product === id)
+                setCart(true);
+        })
+        // eslint-disable-next-line
+    }, [])
+
+
     return (
         <div className="col">
             <div className="card h-100">
@@ -56,7 +84,7 @@ function ProductItem({ id, title, subtitle, img, alt_img, price, addProduct }: P
                     !addProduct ?
                         <>
                             <div className='product-top position-relative text-center h-100'>
-                                <Link to={`product/${id}`}>
+                                <Link to={`/product/${id}`}>
                                     <img src={img} className="card-img-top h-100" alt={alt_img} />
                                 </Link>
 
@@ -89,13 +117,13 @@ function ProductItem({ id, title, subtitle, img, alt_img, price, addProduct }: P
                                 }
                                 <div className="w-100 d-flex justify-content-center">
                                     <div className="product-options d-flex justify-content-evenly pt-1">
-                                        <button onClick={handleLike} className='btn border-0 text-white d-flex flex-column align-items-center p-1'>
+                                        <button onClick={handleCart} className='btn border-0 text-white d-flex flex-column align-items-center p-1'>
                                             <FontAwesomeIcon icon={faCartShopping} className={'text-white'} />
-                                            <span className='product-options-color'>Add to Cart</span>
+                                            <span className='product-options-color'>{!cart ? 'Add to Cart' : 'Remove'}</span>
                                         </button>
                                         <button onClick={handleLike} className='btn border-0 text-white d-flex flex-column align-items-center p-1'>
 
-                                            <FontAwesomeIcon icon={faHeart} className={'text-white'} />
+                                            <FontAwesomeIcon icon={faHeart} className={like ? 'text-danger' : 'text-white'} />
                                             <span className='product-options-color'>My List</span>
                                         </button>
                                     </div>

@@ -13,7 +13,8 @@ export interface User {
     token?: string;
     isAdmin?: boolean;
     cart?: Array<string>;
-    likedProducts?: Array<string>;
+    favoriteProducts?: Array<string>;
+    cartProducts?: Array<string>;
     status?: 'Active' | 'Expired' | 'Blocked';
 }
 
@@ -74,11 +75,4 @@ export interface context {
 export interface CopyCardsContext {
     copyCards?: Array<Product>,
     setCopyCards: Function
-}
-
-export interface CropperContext {
-    showCropper: boolean;
-    setShowCropper: Function;
-    uploadedImg: string;
-    setUploadedImg: Function;
 }

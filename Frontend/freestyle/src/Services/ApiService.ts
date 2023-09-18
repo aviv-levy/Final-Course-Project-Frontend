@@ -123,9 +123,9 @@ export async function getMyProducts(): Promise<Array<Product>> {
     }
 }
 // Get user card by Id
-export async function getCardById(cardId?: string): Promise<Product> {
+export async function getProductById(productId?: string): Promise<Product> {
     try {
-        const result = await axios.get<Product>(serverUrl + `cards/getCard/${cardId}`, {
+        const result = await axios.get<Product>(serverUrl + `products/getProduct/${productId}`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -139,10 +139,10 @@ export async function getCardById(cardId?: string): Promise<Product> {
     }
 }
 
-// Get user favorite cards
-export async function getFavoriteCards(): Promise<Array<Product>> {
+// Get user favorite products
+export async function getFavoriteProducts(): Promise<Array<Product>> {
     try {
-        const result = await axios.get<Array<Product>>(serverUrl + `cards/getFav`, {
+        const result = await axios.get<Array<Product>>(serverUrl + `products/getFav`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + getToken()
@@ -178,10 +178,27 @@ export async function addNewProduct(product?: Product): Promise<Product> {
 }
 
 
-// Update user liked card by card Id
-export async function likeCard(cardId?: string): Promise<User> {
+// Update user liked product by product Id
+export async function likeProduct(productId?: string): Promise<User> {
     try {
-        const result = await axios.put<User>(serverUrl + `userDetails/likeCard/${cardId}`, {}, {
+        const result = await axios.put<User>(serverUrl + `user/likeProduct/${productId}`, {}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
+            },
+        })
+
+        return result.data;
+
+    } catch (error: any) {
+        const errorText = error.response.data
+        throw errorText;
+    }
+}
+// Update user cart by product Id
+export async function addToCart(productId?: string): Promise<User> {
+    try {
+        const result = await axios.put<User>(serverUrl + `user/addtocart/${productId}`, {}, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getToken()}`
@@ -196,9 +213,10 @@ export async function likeCard(cardId?: string): Promise<User> {
     }
 }
 // Update card by Id
-export async function updateCard(card?: Product): Promise<string> {
+export async function updateProfileImg(img: string): Promise<string> {
     try {
-        const result = await axios.put<string>(serverUrl + `cards/updateCard`, card, {
+        const obj = {img: img}
+        const result = await axios.put<string>(serverUrl + `user/updateProfileImg`, obj, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getToken()}`

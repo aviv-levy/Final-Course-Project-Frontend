@@ -48,6 +48,38 @@
 .icon-color {
     color: #a9b8c5;
 }
-.img-size{
+
+.img-size {
     width: 100px;
+}
+
+.addcart {
+    background-color: #fefa03;
+}
+
+.addcart:hover {
+    background-color: #000000D9;
+    color: white;
+}
+
+.addcart:active {
+    background-color: #000000D9 !important;
+    color: white !important;
+}
+
+.size:hover {
+    border: solid;
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.size-selected{
+    border: solid;
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+    font-weight: bolder;
 }

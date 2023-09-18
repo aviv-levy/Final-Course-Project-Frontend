@@ -1,5 +1,5 @@
 import '../CSS/Navbar.css'
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faBagShopping } from '@fortawesome/free-solid-svg-icons'
 import { NavLink, Link } from 'react-router-dom'
@@ -10,6 +10,8 @@ import { UserContext } from '../App';
 function Navbar() {
 
     const [search, setSearch] = useState('');
+    const [favoriteAmount, setFavoriteAmount] = useState(0);
+    const [cartAmount, setCartAmount] = useState(0);
 
     const isLoggedIn = useContext(UserContext);
     const userDetails = useContext(UserContext);
@@ -21,6 +23,15 @@ function Navbar() {
         userDetails?.setUserDetails(undefined);
     }
 
+    useEffect(() => {
+
+        if (userDetails?.userDetails?.favoriteProducts)
+            setFavoriteAmount(userDetails?.userDetails?.favoriteProducts?.length);
+
+        if (userDetails?.userDetails?.cartProducts)
+            setCartAmount(userDetails?.userDetails?.cartProducts?.length);
+        // eslint-disable-next-line
+    }, [userDetails?.userDetails?.favoriteProducts, userDetails?.userDetails?.cartProducts])
 
     return (
         // "navbar navbar-expand-lg bg-primary"
@@ -64,14 +75,14 @@ function Navbar() {
                                     <li className="nav-item">
                                         <NavLink to='cart' className='position-relative text-white ms-3 me-2 fs-4'>
                                             <FontAwesomeIcon icon={faBagShopping} />
-                                            <Badge>2</Badge>
+                                            <Badge>{cartAmount}</Badge>
                                         </NavLink>
                                     </li>
 
                                     <li className="nav-item">
                                         <NavLink to='favorites' className='position-relative text-white mx-3 fs-4'>
                                             <FontAwesomeIcon icon={faHeart} />
-                                            <Badge>4</Badge>
+                                            <Badge>{favoriteAmount}</Badge>
                                         </NavLink>
                                     </li>
                                 </>
@@ -99,7 +110,7 @@ function Navbar() {
                                             <button className='bg-transparent border border-0 dropdown-toggle' type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 <img src={
                                                     userDetails?.userDetails?.img ? userDetails.userDetails.img :
-                                                    "https://brsc.sa.edu.au/wp-content/uploads/2018/09/placeholder-profile-sq.jpg"}
+                                                        "https://brsc.sa.edu.au/wp-content/uploads/2018/09/placeholder-profile-sq.jpg"}
                                                     className="navImg"
                                                     alt="user Pic" />
                                             </button>

@@ -1,14 +1,12 @@
-import { createContext, FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import '../CSS/pictures.css'
 import StyledInput from "../Components/StyledInput";
 import Title from "../Components/Title";
-import { Address, CropperContext, User } from "../Services/Interfaces";
-import { getUserDetails, updateAccount } from "../Services/ApiService";
+import { Address, User } from "../Services/Interfaces";
+import { getUserDetails, updateAccount, updateProfileImg } from "../Services/ApiService";
 import { isUpdateUserValid } from "../Services/Validations";
 import CropperBox from "../Components/CropperBox";
 import { fileToBase64 } from "../Utils/fileToString";
-
-export const Croppercontext = createContext<CropperContext | null>(null);
 
 function EditUserPage() {
 
@@ -22,7 +20,8 @@ function EditUserPage() {
     const [isLoading, setIsLoading] = useState(true);
 
     async function fileRecieved(file: File) {
-        setUploadedImg(await fileToBase64(file))
+        const basedFile = await fileToBase64(file);
+        setUploadedImg(basedFile)
         setShowCropper(true);
     }
 
@@ -38,6 +37,16 @@ function EditUserPage() {
             .then(() => {
                 console.log('User has been updated');
             })
+            .catch(err => {
+                if (err)
+                    console.log(err);
+            })
+    }
+
+    async function updateImgProfile() {
+        await updateProfileImg(uploadedImg).then(() => {
+            setUser({ ...user, img: uploadedImg })
+        })
             .catch(err => {
                 if (err)
                     console.log(err);
@@ -77,9 +86,7 @@ function EditUserPage() {
                     <Title title='Edit Account' />
                     {
                         showCropper ?
-                            <Croppercontext.Provider value={{ showCropper, setShowCropper, uploadedImg, setUploadedImg }}>
-                                <CropperBox />
-                            </Croppercontext.Provider>
+                            <CropperBox uploadingImage={uploadedImg} setShowCropper={setShowCropper} setCroppedImage={setUploadedImg} updateImgServer={updateImgProfile} />
                             :
                             <div className="container mb-5">
                                 <div className="d-flex justify-content-center">
@@ -88,8 +95,8 @@ function EditUserPage() {
                                             <span className="glyphicon glyphicon-camera"></span>
                                             <span>Change Image</span>
                                         </label>
-                                        <input className="d-none" id="file" type="file" onChange={(e: any) => fileRecieved(e.target.files[0])} />
-                                        <img src="https://brsc.sa.edu.au/wp-content/uploads/2018/09/placeholder-profile-sq.jpg" alt="UserImage" className="accountPic" />
+                                        <input className="d-none" id="file" type="file" accept="image/*" onChange={(e: any) => fileRecieved(e.target.files[0])} />
+                                        <img src={user.img} alt="UserImage" className="accountPic" />
                                     </div>
                                 </div>
 

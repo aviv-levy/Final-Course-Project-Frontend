@@ -2,7 +2,7 @@ import { FormEvent, createContext, useState, useEffect } from "react";
 import '../CSS/AddProduct.css'
 import CountButton from "../Components/CountButton";
 import { fileToBase64 } from "../Utils/fileToString";
-import { CropperContext, Product, SizeQuantity} from "../Services/Interfaces";
+import { Product, SizeQuantity } from "../Services/Interfaces";
 import StyledInput from "../Components/StyledInput";
 import { addNewProduct } from "../Services/ApiService";
 import CropperBox from "../Components/CropperBox";
@@ -20,7 +20,6 @@ interface AddSizeContext {
 }
 
 export const AddSizeContext = createContext<AddSizeContext | null>(null);
-export const Croppercontext = createContext<CropperContext | null>(null);
 
 function AddProductPage() {
 
@@ -57,18 +56,15 @@ function AddProductPage() {
         setProduct({ ...product, sizeQuantity: sizesQuantity } as Product);
     }, [sizesQuantity])
 
-    useEffect(()=>{
+    useEffect(() => {
         setProduct({ ...product, img: uploadedImg } as Product);
-    },[uploadedImg])
+    }, [uploadedImg])
 
     return (
         <>
             {showCropper ?
-                <Croppercontext.Provider value={{ showCropper, setShowCropper, uploadedImg, setUploadedImg }}>
+                <CropperBox uploadingImage={uploadedImg} setShowCropper={setShowCropper} setCroppedImage={setUploadedImg} />
 
-                    <CropperBox />
-
-                </Croppercontext.Provider>
                 :
                 <div className="container my-5">
                     <div className="row d-flex">

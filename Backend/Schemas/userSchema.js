@@ -13,7 +13,10 @@ const UserSchema = new mongoose.Schema({
         unique: true
     },
     password: String,
-    img: String,
+    img:{ 
+        type:String,
+        default: "https://brsc.sa.edu.au/wp-content/uploads/2018/09/placeholder-profile-sq.jpg"
+    },
     img_alt: String,
     address: {
         type: Object,
@@ -22,7 +25,8 @@ const UserSchema = new mongoose.Schema({
         housenum: Number,
     },
     biz: Boolean,
-    likedProducts: Array,
+    favoriteProducts: Array,
+    cartProducts: Array,
     isAdmin: Boolean,
     status: {
         type: String,

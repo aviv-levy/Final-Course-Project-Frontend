@@ -46,8 +46,7 @@ router.put('/updateAccount', async (req, res) => {
             req.body.password = 'Aa!12345';
 
         const valRes = userUpdateModel.validatePost(req.body);
-        if (valRes.error)
-        {
+        if (valRes.error) {
             console.log(valRes.error);
             return res.status(400).send(valRes.error);
         }
@@ -59,8 +58,79 @@ router.put('/updateAccount', async (req, res) => {
         else
             req.body.password = await bcrypt.hash(req.body.password, 10)
 
-        await userUpdateModel.updateOne({ _id: userId}, { $set: req.body })
+        await userUpdateModel.updateOne({ _id: userId }, { $set: req.body })
         let user = await userDetailsModel.findOne({ _id: req.id });
+        user.password = undefined;
+        res.status(201).json(user);
+
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+})
+
+//http://localhost:4500/user/updateProfileImg
+router.put('/updateProfileImg', async (req, res) => {
+    try {
+        const valRes = userUpdateModel.validatePut(req.body);
+        if (valRes.error)
+            return res.status(400).send(valRes.error);
+
+        await userUpdateModel.updateOne({ _id: req.id }, { $set: { img: req.body.img } })
+
+        res.status(201).json('great');
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+})
+
+
+// http://localhost:4500/user/likeProduct/:productId
+router.put('/likeProduct/:productId', async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        let user = await userDetailsModel.findOne({ _id: req.id });
+        let flag = true;
+        
+        await Promise.all(user.favoriteProducts.map(async (product) => {
+            if (product === productId) {
+                flag = false;
+                await userDetailsModel.updateOne({ _id: req.id }, { $pull: { favoriteProducts: productId } })
+                return;
+            }
+        }));
+
+        if (flag)
+            await userDetailsModel.updateOne({ _id: req.id }, { $push: { favoriteProducts: productId } })
+
+        user = await userDetailsModel.findOne({ _id: req.id });
+        user.password = undefined;
+        res.status(201).json(user);
+
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+})
+
+
+// http://localhost:4500/user/addtocart/:productId
+router.put('/addtocart/:productId', async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        let user = await userDetailsModel.findOne({ _id: req.id });
+        let flag = true;
+        
+        await Promise.all(user.cartProducts.map(async (product) => {
+            if (product === productId) {
+                flag = false;
+                await userDetailsModel.updateOne({ _id: req.id }, { $pull: { cartProducts: productId } })
+                return;
+            }
+        }));
+
+        if (flag)
+            await userDetailsModel.updateOne({ _id: req.id }, { $push: { cartProducts: productId } })
+
+        user = await userDetailsModel.findOne({ _id: req.id });
         user.password = undefined;
         res.status(201).json(user);
 

@@ -22,3 +22,11 @@ code {
   flex-direction: column;
   min-height: 100vh;
 }
+
+.active{
+  color: #333333;
+}
+
+.notactive{
+  color: #7D7D7D;
+}
