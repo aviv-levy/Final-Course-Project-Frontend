@@ -24,6 +24,7 @@ const loginRouter = require('./Routers/loginRouter.js')
 const registerRouter = require('./Routers/registerRouter.js')
 const userRouter = require('./Routers/userRouter.js')
 const productRouter = require('./Routers/productRouter.js')
+const resetAccountRouter = require('./Routers/resetAccountRouter.js')
 
 
 async function main() {
@@ -44,6 +45,7 @@ app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 app.use('/user', verifyToken, userRouter);
 app.use('/products', productRouter);
+app.use('/resetAccount', resetAccountRouter);
 
 
 // http://localhost:4500/initilaize

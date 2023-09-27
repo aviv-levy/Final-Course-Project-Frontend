@@ -20,6 +20,8 @@ router.get('/userDetails', async (req, res) => {
 router.post('/addProduct', async (req, res) => {
     try {
         req.body.userId = req.id;
+        if (req.body.img === '')
+            delete req.body.img;
         const valRes = ProductModel.validatePost(req.body); // synchronized method for running validations
         if (valRes.error) {
             console.log(valRes.error);
@@ -90,7 +92,7 @@ router.put('/likeProduct/:productId', async (req, res) => {
         const productId = req.params.productId;
         let user = await userDetailsModel.findOne({ _id: req.id });
         let flag = true;
-        
+
         await Promise.all(user.favoriteProducts.map(async (product) => {
             if (product === productId) {
                 flag = false;
@@ -118,7 +120,7 @@ router.put('/addtocart/:productId', async (req, res) => {
         const productId = req.params.productId;
         let user = await userDetailsModel.findOne({ _id: req.id });
         let flag = true;
-        
+
         await Promise.all(user.cartProducts.map(async (product) => {
             if (product === productId) {
                 flag = false;

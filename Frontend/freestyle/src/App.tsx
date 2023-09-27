@@ -20,6 +20,8 @@ import EditUserPage from './Pages/EditUserPage';
 import CartPage from './Pages/CartPage';
 import AddProductPage from './Pages/AddProductPage';
 import ProductPage from './Pages/ProductPage';
+import ResetPasswordPage from './Pages/ResetPasswordPage';
+import Error404Page from './Pages/Error404Page';
 
 
 export const UserContext = createContext<context | null>(null);
@@ -63,12 +65,14 @@ function App() {
               <Route path='/women/:category' element={<ProductsPage />} />
               <Route path='/login' element={<LoginPage />} />
               <Route path='/register' element={<RegisterPage />} />
+              <Route path='/reset-password/:token' element={<ResetPasswordPage />} />
               <Route path='/manageproducts' element={<ManageProductsPage />} />
               <Route path='/manageproducts/addProduct' element={<AddProductPage />} />
               <Route path='/favorites' element={<FavoritesPage />} />
               <Route path='/cart' element={<CartPage />} />
               <Route path='/account/:userId' element={<EditUserPage />} />
               <Route path='/product/:productId' element={<ProductPage />} />
+              <Route path='/404' element={<Error404Page />} />
             </Routes>
 
             <Footer />

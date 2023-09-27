@@ -170,9 +170,22 @@ export async function addNewProduct(product?: Product): Promise<Product> {
         return result.data;
 
     } catch (error: any) {
-        console.log(error);
-
         const httpStatusCode = error.response.data
+        throw httpStatusCode;
+    }
+}
+
+// Add new product
+export async function verifyResetPassword(token: string): Promise<void> {
+    try {
+        await axios.post(serverUrl + 'resetAccount/checkExpired', {token}, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+    } catch (error: any) {
+        const httpStatusCode = error.response.status
         throw httpStatusCode;
     }
 }
@@ -230,10 +243,10 @@ export async function updateProfileImg(img: string): Promise<string> {
         throw errorText;
     }
 }
-// Delete card by Id
-export async function deleteCard(cardId?: string): Promise<void> {
+// Delete product by Id
+export async function deleteProduct(productId?: string): Promise<void> {
     try {
-        await axios.delete(serverUrl + `cards/deleteCard/${cardId}`, {
+        await axios.delete(serverUrl + `products/deleteProduct/${productId}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getToken()}`

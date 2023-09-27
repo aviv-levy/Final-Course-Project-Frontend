@@ -12,15 +12,19 @@ export interface User {
     biz?: boolean,
     token?: string;
     isAdmin?: boolean;
-    cart?: Array<string>;
     favoriteProducts?: Array<string>;
-    cartProducts?: Array<string>;
+    cartProducts?: Array<ProductQuantity>;
     status?: 'Active' | 'Expired' | 'Blocked';
 }
 
 export interface LoginUser {
     email: string;
     password?: string;
+}
+
+export interface ResetPassword {
+    newPassword: string;
+    verifyNewPassword: string;
 }
 
 export interface Product {

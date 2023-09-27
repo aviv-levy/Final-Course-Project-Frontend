@@ -70,5 +70,29 @@ router.get('/getFav', verifyToken, async (req, res) => {
     }
 })
 
+// http://localhost:4500/cards/deleteProduct/:productId
+router.delete('/deleteProduct/:productId', verifyToken, async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        const Users = await UserModel.find();
+
+        await Promise.all(Users.map(async (user) => {
+            if (user.cartProducts.find(product => product === productId))
+                await UserModel.updateOne({ _id: user._id }, { $pull: { cartProducts: productId } })
+
+            if (user.favoriteProducts.find(product => product === productId))
+                await UserModel.updateOne({ _id: user._id }, { $pull: { favoriteProducts: productId } })
+
+        }));
+
+        await ProductModel.deleteOne({ _id: productId });
+
+        res.status(204).send('Card has been deleted');
+
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+})
+
 
 module.exports = router;

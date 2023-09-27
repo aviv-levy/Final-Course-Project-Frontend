@@ -34,7 +34,7 @@ function StyledInput({ type, inputValue, placeholder, setValueFunc, inputParam, 
                     </div>
 
                     :
-                    <div className="form-group input-block mb-4">
+                    <div className="form-group input-block mb-3">
                         <input
                             type={type}
                             value={inputValueState || ''}

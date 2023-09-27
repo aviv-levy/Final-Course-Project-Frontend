@@ -2,6 +2,10 @@ import { useState, useCallback, FormEvent, useContext, useEffect } from 'react'
 import '../CSS/Cropper.css'
 import Cropper, { Area, Point } from 'react-easy-crop'
 import getCroppedImg from '../Utils/cropImage';
+import Modal from 'react-modal';
+import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 interface Props {
     uploadingImage: string,
@@ -25,6 +29,11 @@ function CropperBox({ uploadingImage, setShowCropper, setCroppedImage, updateImg
         },
         []
     );
+
+    function closeModal() {
+        setCroppedImage('')
+        setShowCropper(false);
+    }
 
     useEffect(() => {
         if (updateImgServer && isCropped) {
@@ -57,36 +66,47 @@ function CropperBox({ uploadingImage, setShowCropper, setCroppedImage, updateImg
         }
     }, [croppedAreaPixels, rotation])
 
-
     return (
-        <div className="App">
-            <div className="crop-container">
-                <Cropper
-                    image={uploadingImage}
-                    crop={crop}
-                    zoom={zoom}
-                    aspect={1 / 1}
-                    onCropChange={setCrop}
-                    onCropComplete={onCropComplete}
-                    onZoomChange={setZoom}
-                />
+        <Modal
+            isOpen={true}
+            onRequestClose={closeModal}
+            contentLabel="Modal"
+        >
+            <div className="App">
+                <div className="crop-container">
+                    <Cropper
+                        image={uploadingImage}
+                        crop={crop}
+                        zoom={zoom}
+                        aspect={1 / 1}
+                        onCropChange={setCrop}
+                        onCropComplete={onCropComplete}
+                        onZoomChange={setZoom}
+                    />
+                </div>
+                <div className="controls d-flex justify-content-center">
+                    <div className="d-flex align-items-center me-4">
+
+                        <FontAwesomeIcon icon={faImage} className="me-2" />
+                        <input
+                            type="range"
+                            value={zoom}
+                            min={1.1}
+                            max={3}
+                            step={0.1}
+                            aria-labelledby="Zoom"
+                            onChange={(e) => {
+                                setZoom(+e.target.value)
+                            }}
+                            style={{ accentColor: "#3f51b5" }}
+                        />
+                        <FontAwesomeIcon icon={faImage} className="ms-2 fs-4" />
+                    </div>
+                    <button className='btn px-4 me-2' style={{ backgroundColor: "#fff", color: '#6f6f6f', borderColor: "#8e8e8e" }} onClick={closeModal}>Cancel</button>
+                    <button className='btn px-4' style={{ backgroundColor: "#3f51b5", color: 'white' }} onClick={handleCrop}>Crop</button>
+                </div>
             </div>
-            <div className="controls">
-                <input
-                    type="range"
-                    value={zoom}
-                    min={1.1}
-                    max={3}
-                    step={0.1}
-                    aria-labelledby="Zoom"
-                    onChange={(e) => {
-                        setZoom(+e.target.value)
-                    }}
-                    className="zoom-range"
-                />
-                <button onClick={handleCrop}>Crop</button>
-            </div>
-        </div>
+        </Modal>
     );
 }
 

@@ -24,10 +24,10 @@ function ManageProductsPage() {
     return (
         <div className='container-fluid my-4'>
             <div className="row row-cols-1 row-cols-md-4 mx-4 g-4">
-                <ProductItem title="" subtitle="" price={0} addProduct={true} />
+                <ProductItem product={{} as Product} addProduct={true} />
                 {
                     Products?.map(product =>
-                        <ProductItem key={product._id} id={product._id} title={product.title} subtitle={product.subtitle} price={product.price} img={product.img} />
+                        <ProductItem key={product._id} product={product} />
                     )
                 }
             </div>

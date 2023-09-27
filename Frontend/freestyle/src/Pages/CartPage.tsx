@@ -2,6 +2,9 @@ import CartProduct from "../Components/CartProduct";
 import Title from "../Components/Title";
 
 function CartPage() {
+
+    
+
     return (
         <>
             <Title title='Cart' />

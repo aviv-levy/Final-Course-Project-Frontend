@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import '../CSS/Product.css'
 import { Product } from "../Services/Interfaces";
-import { addToCart, getProductById } from "../Services/ApiService";
+import { addToCart, getProductById, likeProduct } from "../Services/ApiService";
 import { useParams } from "react-router-dom";
-import { faHeart} from "@fortawesome/free-solid-svg-icons";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Accordion from "../Components/Accordion";
 import { getBrandDetails, returns } from "../Utils/brandDetails";
@@ -15,6 +15,7 @@ function ProductPage() {
     const [product, setProduct] = useState<Product>({} as Product);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedSize, setSelectedSize] = useState<number>();
+    const [isFavorite, setIsFavorite] = useState(false);
     const { productId } = useParams();
 
 
@@ -33,17 +34,30 @@ function ProductPage() {
                 return;
             }
         });
+        userDetails?.userDetails?.favoriteProducts?.find(favorite => favorite === productId)
+            ? setIsFavorite(true) : setIsFavorite(false)
         // eslint-disable-next-line
     }, [])
 
-    async function addCart(){
+    //Add the product to cart
+    async function addCart() {
         await addToCart(product._id)
-        .then((user) => {
-            userDetails?.setUserDetails(user)
-        })
-        .catch((err) => { if (err) return; })
+            .then((user) => {
+                userDetails?.setUserDetails(user)
+            })
+            .catch((err) => { if (err) return; })
+    }
+    //Like or dislike handle button.
+    async function handleLike() {
+        setIsFavorite(!isFavorite)
+        await likeProduct(product._id)
+            .then((user) => {
+                userDetails?.setUserDetails(user)
+            })
+            .catch((err) => { if (err) return; })
     }
 
+    //Accordion titles and conent
     const accordionItems = [
         {
             title: 'Details',
@@ -91,11 +105,14 @@ function ProductPage() {
                             <hr />
 
                             <div className="d-flex justify-content-between">
-                                <div className="d-flex flex-column px-2 bg-dark" style={{color:"#fefa03", fontSize:"14px"}}>
+                                <div className="d-flex flex-column px-2 bg-dark" style={{ color: "#fefa03", fontSize: "14px" }}>
                                     <span>Order today</span>
                                     <span>Received the next business day</span>
                                 </div>
-                                <button className="btn border-0"><FontAwesomeIcon icon={faHeart} className='me-1' /> MY LIST</button>
+                                <button onClick={handleLike} className={`btn border-0 ${isFavorite ? 'text-danger' : ''}`}>
+                                    <FontAwesomeIcon icon={faHeart} className='me-1' />
+                                    {isFavorite ? 'REMOVE' : 'MY LIST'}
+                                </button>
 
                             </div>
 
