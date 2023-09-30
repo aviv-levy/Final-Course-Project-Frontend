@@ -4,7 +4,7 @@ import { User } from '../Services/Interfaces';
 import Error from './Error';
 
 interface Props {
-    type: "text" | "password" | "email" | "number" | "radio";
+    type: "text" | "password" | "email" | "number" | "radio" | 'textArea';
     inputValue?: string | number;
     placeholder: string;
     inputParam: string;
@@ -34,18 +34,34 @@ function StyledInput({ type, inputValue, placeholder, setValueFunc, inputParam, 
                     </div>
 
                     :
-                    <div className="form-group input-block mb-3">
-                        <input
-                            type={type}
-                            value={inputValueState || ''}
-                            onChange={(e) => {
-                                setInputValueState(e.target.value)
-                                setValueFunc((prevState: User) => ({ ...prevState, [inputParam]: type === 'number' ? +e.target.value : e.target.value }))
-                            }}
-                            required />
-                        <span className="placeholderr mx-2">{placeholder}</span>
-                        <Error errorText={errorText} />
-                    </div>
+                    <>
+                        {
+                            type === 'textArea' ?
+                                <div className="form-group input-block mb-3">
+                                    <textarea placeholder='' rows={5} className='h-50'
+                                        onChange={(e) => {
+                                            setInputValueState(e.target.value)
+                                            setValueFunc((prevState: any) => ({ ...prevState, [inputParam]: e.target.value }))
+                                        }}
+                                        required></textarea>
+                                    <span className="placeholderr mx-2">{placeholder}</span>
+                                    <Error errorText={errorText} />
+                                </div>
+                                :
+                                <div className="form-group input-block mb-3">
+                                    <input
+                                        type={type}
+                                        value={inputValueState || ''}
+                                        onChange={(e) => {
+                                            setInputValueState(e.target.value)
+                                            setValueFunc((prevState: User) => ({ ...prevState, [inputParam]: type === 'number' ? +e.target.value : e.target.value }))
+                                        }}
+                                        required />
+                                    <span className="placeholderr mx-2">{placeholder}</span>
+                                    <Error errorText={errorText} />
+                                </div>
+                        }
+                    </>
             }
         </>
     );

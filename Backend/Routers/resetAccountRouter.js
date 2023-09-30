@@ -2,46 +2,22 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
 const moment = require('moment');
+const MailSender = require('../Utils/mailSender');
 const userUpdateModel = require('../Models/userLoginModel');
 const resetPasswordModel = require('../Models/resetPasswordModel');
-
-
-async function sendEmail(mailOptions) {
-    return new Promise((resolve, reject) => {
-        // Send email with a link to reset the password
-        const transporter = nodemailer.createTransport({
-            // Configure your email provider here
-            service: 'gmail',
-            auth: {
-                user: 'finalproject1413@gmail.com',
-                pass: 'kngd xzlq zcnt ifka',
-            },
-        });
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.error('Error sending email:', error);
-                reject(error);
-            } else {
-                console.log('Email sent:', info.response);
-                resolve(info);
-            }
-        });
-    });
-}
 
 // Send reset password email
 async function sendResetPasswordEmail(token, reciver) {
 
     const mailOptions = {
         from: 'finalproject1413@gmail.com',
-        to: 'avvvviv@gmail.com', //At the end change to receiver
+        to: reciver,
         subject: 'FreeStyle - Password Reset',
         text: `Click on this link to reset your password: http://localhost:3000/reset-password/${token}`,
     };
 
-    await sendEmail(mailOptions);
+    await MailSender(mailOptions)
 }
 
 // Check if the token is expired.
@@ -85,7 +61,7 @@ router.get('/:email', async (req, res) => {
 router.post('/checkExpired', async (req, res) => {
     try {
 
-        if(await checkExpiredToken(req.body.token))
+        if (await checkExpiredToken(req.body.token))
             return res.status(404).send();
         res.status(200).send();
     } catch (err) {
@@ -98,21 +74,27 @@ router.post('/', async (req, res) => {
     try {
         const { token, newPassword } = req.body;
 
-        if(await checkExpiredToken(token))
+        if (await checkExpiredToken(token))
             return res.status(404).send();
 
-        const valRes = resetPasswordModel.validatePost(req.body); // synchronized method for running validations
-        if (valRes.error)
+        const valRes = resetPasswordModel.validatePost({ newPassword }); // synchronized method for running validations
+        if (valRes.error) {
+            console.log(valRes.error);
             return res.status(400).send(valRes.error);
+        }
+
+
+        const user = await resetPasswordModel.findOne({ token: token })
 
         // Update the user's password 
-        await userUpdateModel.updateOne({ _id: user._id }, { password: await bcrypt.hash(newPassword, 10) })
+        await userUpdateModel.updateOne({ email: user.email }, { password: await bcrypt.hash(newPassword, 10) })
 
         // Remove the used token from the database
-        await resetPasswordModel.deleteMany({ email: email })
+        await resetPasswordModel.deleteMany({ email: user.email })
 
         return res.status(200).send('Password reset successful');
     } catch (err) {
+        console.log(err.message);
         res.status(500).send(err.message);
     }
 })

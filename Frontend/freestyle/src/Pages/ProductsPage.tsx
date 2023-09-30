@@ -29,7 +29,7 @@ function ProductsPage() {
 
     return (
         <div className='container-fluid my-4'>
-            <div className="row row-cols-1 row-cols-md-4 mx-4 g-4">
+            <div className="row row-cols-1 row-cols-md-3 mx-4 g-4">
                 {
                     Products?.map(product =>
                         <ProductItem key={product._id} product={product} />

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function Footer() {
 
-    
+
     return (
         <footer className="footer bg-dark text-light p-4">
             <div className="container">
@@ -28,6 +28,10 @@ function Footer() {
                     <div className="col-md-4 text-center my-auto">
                         <h2>FreeStyle</h2>
                     </div>
+                </div>
+                <div className="copyright mt-5 text-center">
+                    &#169; Copyright 2023-2024 <br />
+                    All Rights Reserved. Powered by Freestyle
                 </div>
             </div>
         </footer>

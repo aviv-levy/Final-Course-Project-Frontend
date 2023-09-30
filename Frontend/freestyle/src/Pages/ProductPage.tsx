@@ -14,6 +14,7 @@ function ProductPage() {
 
     const [product, setProduct] = useState<Product>({} as Product);
     const [isLoading, setIsLoading] = useState(true);
+    const [outOfStock, setOutOfStock] = useState(false);
     const [selectedSize, setSelectedSize] = useState<number>();
     const [isFavorite, setIsFavorite] = useState(false);
     const { productId } = useParams();
@@ -38,6 +39,11 @@ function ProductPage() {
             ? setIsFavorite(true) : setIsFavorite(false)
         // eslint-disable-next-line
     }, [])
+
+    function handleSelectedSize(index: number, itemQuantity: number) {
+        setSelectedSize(index)
+        itemQuantity < 1 ? setOutOfStock(true) : setOutOfStock(false)
+    }
 
     //Add the product to cart
     async function addCart() {
@@ -77,10 +83,12 @@ function ProductPage() {
         <>
             {
                 !isLoading &&
-                <div className="container mt-5">
+                <div className="container my-5">
                     <div className="row">
-
-                        <div className="col-5">
+                        <div className="col-md text-center">
+                            <img src={product.img} alt={product.imageAlt} className="w-75" />
+                        </div>
+                        <div className="col-md-5">
                             <hr />
                             <div className="mb-3">
                                 <span>{product.brand}</span>
@@ -93,14 +101,25 @@ function ProductPage() {
                                 <h2 className="fs-5">Size</h2>
                                 {
                                     product.sizeQuantity.map((item, index) =>
-                                        <span key={index} className={`size me-3 ${selectedSize === index ? 'size-selected' : ''}`} onClick={() => setSelectedSize(index)}
+                                        <span key={index}
+                                            className={`size me-3 ${selectedSize === index ? 'size-selected' : ''}
+                                                    ${item.quantity < 1 ? 'not-avilable' : ''}`}
+                                            onClick={() => handleSelectedSize(index, item.quantity)}
                                         >{item.size}</span>
                                     )
                                 }
 
                             </div>
-
-                            <button onClick={addCart} className="btn m-0 w-100 fs-3 addcart">Add to cart</button>
+                            {
+                                !outOfStock ?
+                                    <button onClick={addCart} className="btn m-0 w-100 fs-3 addcart">Add to cart</button>
+                                    :
+                                    <div className="w-100 d-flex justify-content-center">
+                                        <div className="outOfStock text-center py-4 px-2">
+                                            <span>OUT OF STOCK</span>
+                                        </div>
+                                    </div>
+                            }
 
                             <hr />
 
@@ -117,10 +136,6 @@ function ProductPage() {
                             </div>
 
                             <Accordion items={accordionItems} />
-                        </div>
-
-                        <div className="col text-center">
-                            <img src={product.img} alt={product.imageAlt} className="w-75" />
                         </div>
 
                     </div>

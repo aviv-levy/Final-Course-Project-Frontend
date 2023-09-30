@@ -7,6 +7,7 @@ import StyledInput from "../Components/StyledInput";
 import { addNewProduct } from "../Services/ApiService";
 import CropperBox from "../Components/CropperBox";
 import { sortSizeQuantity } from "../Utils/sorts";
+import { toast } from "react-toastify";
 
 interface SizesBtns {
     size: string;
@@ -20,6 +21,7 @@ interface AddSizeContext {
     setSizesQuantity: Function,
 }
 
+// eslint-disable-next-line
 export const AddSizeContext = createContext<AddSizeContext | null>(null);
 
 function AddProductPage() {
@@ -41,9 +43,9 @@ function AddProductPage() {
         e.preventDefault();
 
         await addNewProduct(product).then(() => {
-            console.log('Product added');
+            toast.success('Product added');
         }).catch((err) => {
-            console.log(err);
+            toast.error('An error accourd');
 
         })
     }
@@ -56,10 +58,12 @@ function AddProductPage() {
     useEffect(() => {
         sortSizeQuantity(sizesQuantity)
         setProduct({ ...product, sizeQuantity: sizesQuantity } as Product);
+        // eslint-disable-next-line
     }, [sizesQuantity])
 
     useEffect(() => {
         setProduct({ ...product, img: uploadedImg } as Product);
+        // eslint-disable-next-line
     }, [uploadedImg])
 
     return (
@@ -71,7 +75,7 @@ function AddProductPage() {
             <div className="container my-5">
                 <div className="row d-flex">
                     <div className="col-1"></div>
-                    <div className="col-4 align-self-center">
+                    <div className="col-xl-4  text-center mb-3">
                         {
                             uploadedImg === '' ?
                                 <>
@@ -91,12 +95,40 @@ function AddProductPage() {
                         }
                     </div>
 
-                    <div className="col-3">
+                    <div className="col-xl-3 ">
+                        {
+                            !showAddSize ?
+                                <div onClick={() => SetShowAddSize(true)} className="add-newSize fs-5 p-2 d-flex align-items-center"><div className="add-newSizePlus badge fs-5 p-1 pt-0 mx-2">+</div>Add New Size</div>
+                                :
+                                <div>
+                                    <div className="text-center">
+                                        {
+                                            sizes?.map((size, index) =>
+                                                !size.isDisabled &&
+                                                <button key={index} onClick={() => handleSize(size.size)} className="btn btn-outline-dark me-2" >{size.size}</button>
+                                            )
+                                        }
+                                    </div>
+                                    <button onClick={() => SetShowAddSize(false)} className="btn btn-dark w-100 my-3">Done</button>
+                                </div>
+
+                        }
+                        <AddSizeContext.Provider value={{ sizes, setSizes, sizesQuantity, setSizesQuantity }}>
+                            <div>
+                                {
+                                    sizesQuantity.map((newSize, index) =>
+                                        <CountButton key={index} size={newSize.size} removeButton />)
+                                }
+                            </div>
+                        </AddSizeContext.Provider>
+                    </div>
+
+                    <div className="col-xl-3 mb-3">
                         <form>
 
                             <StyledInput inputParam="title" placeholder="Title" setValueFunc={setProduct} type="text" />
                             <StyledInput inputParam="subtitle" placeholder="SubTitle" setValueFunc={setProduct} type="text" />
-                            <StyledInput inputParam="description" placeholder="Description" setValueFunc={setProduct} type="text" />
+                            <StyledInput inputParam="description" placeholder="Description" setValueFunc={setProduct} type="textArea" />
 
                             <span>Brand: </span>
                             <select name="brand"
@@ -144,33 +176,6 @@ function AddProductPage() {
                         </form>
 
 
-                    </div>
-                    <div className="col-3 ">
-                        {
-                            !showAddSize ?
-                                <div onClick={() => SetShowAddSize(true)} className="add-newSize fs-5 p-2 d-flex align-items-center"><div className="add-newSizePlus badge fs-5 p-1 pt-0 mx-2">+</div>Add New Size</div>
-                                :
-                                <div>
-                                    <div className="text-center">
-                                        {
-                                            sizes?.map((size, index) =>
-                                                !size.isDisabled &&
-                                                <button key={index} onClick={() => handleSize(size.size)} className="btn btn-outline-dark me-2" >{size.size}</button>
-                                            )
-                                        }
-                                    </div>
-                                    <button onClick={() => SetShowAddSize(false)} className="btn btn-dark w-100 my-3">Done</button>
-                                </div>
-
-                        }
-                        <AddSizeContext.Provider value={{ sizes, setSizes, sizesQuantity, setSizesQuantity }}>
-                            <div>
-                                {
-                                    sizesQuantity.map((newSize, index) =>
-                                        <CountButton key={index} size={newSize.size} removeButton />)
-                                }
-                            </div>
-                        </AddSizeContext.Provider>
                     </div>
                 </div>
             </div >

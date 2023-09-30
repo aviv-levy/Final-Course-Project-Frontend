@@ -48,7 +48,7 @@ function Navbar() {
                             isLoggedIn?.isLoggedIn &&
                             <>
                                 <li className="nav-item">
-                                    <NavLink to="/manageproducts" className="nav-link active" aria-current="page">Manage Products</NavLink>
+                                    <NavLink to="/manageproducts" className="nav-link active" aria-current="page">Products</NavLink>
                                 </li>
 
                                 <li className="nav-item">

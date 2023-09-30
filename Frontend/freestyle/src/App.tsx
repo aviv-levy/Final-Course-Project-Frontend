@@ -10,7 +10,7 @@ import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
 import FavoritesPage from './Pages/FavoritesPage';
 import GenderPage from './Pages/GenderPage';
-import { User, context } from './Services/Interfaces';
+import { User, context, loading } from './Services/Interfaces';
 import { removeToken, verifyToken } from './auth/TokenManager';
 import ProductsPage from './Pages/ProductsPage';
 import { getUserDetails } from './Services/ApiService';
@@ -22,12 +22,18 @@ import AddProductPage from './Pages/AddProductPage';
 import ProductPage from './Pages/ProductPage';
 import ResetPasswordPage from './Pages/ResetPasswordPage';
 import Error404Page from './Pages/Error404Page';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ContactPage from './Pages/ContactPage';
+import Loading from './Components/Loading';
 
 
 export const UserContext = createContext<context | null>(null);
+export const LoadingContext = createContext<loading | null>(null);
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [firstLoading, setFirstLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(verifyToken());
   const [userDetails, setUserDetails] = useState<User>();
 
@@ -37,43 +43,52 @@ function App() {
     if (verifyToken()) {
       const getUserDetailss = async () => setUserDetails(await getUserDetails())
       getUserDetailss()
-        .then(() => setIsLoading(false))
+        .then(() => {
+          setFirstLoading(false)
+          setIsLoading(false)
+        })
         .catch((err) => {
           if (err)
             removeToken();
         });
     }
-    else
+    else {
+      setFirstLoading(false)
       setIsLoading(false)
+    }
   }, [])
 
   return (
     <>
-      {!isLoading &&
+      <Loading isLoading={isLoading} />
+      {!firstLoading &&
         <div className='containerr'>
 
           <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails }}>
             <Navbar />
+            <ToastContainer position='top-center' />
+            <LoadingContext.Provider value={{ isLoading, setIsLoading }}>
+              <Routes>
 
-            <Routes>
-
-              <Route path='/' element={<HomePage />} />
-              <Route path='/about' element={<AboutPage />} />
-              <Route path='/men' element={<GenderPage />} />
-              <Route path='/women' element={<GenderPage />} />
-              <Route path='/men/:category' element={<ProductsPage />} />
-              <Route path='/women/:category' element={<ProductsPage />} />
-              <Route path='/login' element={<LoginPage />} />
-              <Route path='/register' element={<RegisterPage />} />
-              <Route path='/reset-password/:token' element={<ResetPasswordPage />} />
-              <Route path='/manageproducts' element={<ManageProductsPage />} />
-              <Route path='/manageproducts/addProduct' element={<AddProductPage />} />
-              <Route path='/favorites' element={<FavoritesPage />} />
-              <Route path='/cart' element={<CartPage />} />
-              <Route path='/account/:userId' element={<EditUserPage />} />
-              <Route path='/product/:productId' element={<ProductPage />} />
-              <Route path='/404' element={<Error404Page />} />
-            </Routes>
+                <Route path='/' element={<HomePage />} />
+                <Route path='/about' element={<AboutPage />} />
+                <Route path='/contact' element={<ContactPage />} />
+                <Route path='/men' element={<GenderPage />} />
+                <Route path='/women' element={<GenderPage />} />
+                <Route path='/men/:category' element={<ProductsPage />} />
+                <Route path='/women/:category' element={<ProductsPage />} />
+                <Route path='/login' element={<LoginPage />} />
+                <Route path='/register' element={<RegisterPage />} />
+                <Route path='/reset-password/:token' element={<ResetPasswordPage />} />
+                <Route path='/manageproducts' element={<ManageProductsPage />} />
+                <Route path='/manageproducts/addProduct' element={<AddProductPage />} />
+                <Route path='/favorites' element={<FavoritesPage />} />
+                <Route path='/cart' element={<CartPage />} />
+                <Route path='/account/:userId' element={<EditUserPage />} />
+                <Route path='/product/:productId' element={<ProductPage />} />
+                <Route path='/404' element={<Error404Page />} />
+              </Routes>
+            </LoadingContext.Provider>
 
             <Footer />
           </UserContext.Provider>

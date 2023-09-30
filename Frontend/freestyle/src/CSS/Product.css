@@ -76,10 +76,30 @@
     cursor: pointer;
 }
 
-.size-selected{
+.size-selected {
     border: solid;
     border-top: 0;
     border-right: 0;
     border-left: 0;
     font-weight: bolder;
+}
+
+.outOfStock{
+    width: 50%;
+    background-color: #000000D9;
+    color: white;
+}
+
+.not-avilable{
+    background: linear-gradient(to right top, rgba(255,255,255,0) 0, rgba(255,255,255,0) 42%, #fff 43%, #fff 46%, #737373 47%, #737373 3%, #fff 54%, #fff 57%, rgba(255,255,255,0) 58%, rgba(255,255,255,0) 100%);
+}
+
+@media (min-width:768px) and (max-width:1300px) {
+    .btn {
+        font-size: 11px;
+    }
+    .sizess{
+        font-size: 11px;
+    }
+
 }

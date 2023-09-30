@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Product, LoginUser, User } from "./Interfaces";
+import { Product, LoginUser, User, ContactUs } from "./Interfaces";
 import { getToken } from "../auth/TokenManager";
 
 
@@ -88,9 +88,9 @@ export async function updateAccount(user?: User): Promise<User> {
 // Get All products
 export async function getProductByCategory(gender: string, category: string): Promise<Array<Product>> {
     try {
-        if(gender === 'men')
+        if (gender === 'men')
             gender = 'Male'
-        else if(gender === 'women')
+        else if (gender === 'women')
             gender = 'Female'
         const result = await axios.get<Array<Product>>(serverUrl + `products/getProductByCategory/${gender}/${category}`, {
             headers: {
@@ -175,15 +175,43 @@ export async function addNewProduct(product?: Product): Promise<Product> {
     }
 }
 
-// Add new product
+// Verify if link is expired
 export async function verifyResetPassword(token: string): Promise<void> {
     try {
-        await axios.post(serverUrl + 'resetAccount/checkExpired', {token}, {
+        await axios.post(serverUrl + 'resetAccount/checkExpired', { token }, {
             headers: {
                 'Content-Type': 'application/json',
             },
         })
 
+    } catch (error: any) {
+        const httpStatusCode = error.response.status
+        throw httpStatusCode;
+    }
+}
+// Reset password
+export async function resetPassword(token: string, newPassword: string): Promise<void> {
+    try {
+        await axios.post(serverUrl + 'resetAccount', { token, newPassword }, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+    } catch (error: any) {
+        const httpStatusCode = error.response.status
+        throw httpStatusCode;
+    }
+}
+
+// Send support mail
+export async function sendSupportMail(contactMessage: ContactUs): Promise<void> {
+    try {
+        await axios.post(serverUrl + 'contact', contactMessage, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
     } catch (error: any) {
         const httpStatusCode = error.response.status
         throw httpStatusCode;
@@ -228,7 +256,7 @@ export async function addToCart(productId?: string): Promise<User> {
 // Update card by Id
 export async function updateProfileImg(img: string): Promise<string> {
     try {
-        const obj = {img: img}
+        const obj = { img: img }
         const result = await axios.put<string>(serverUrl + `user/updateProfileImg`, obj, {
             headers: {
                 'Content-Type': 'application/json',

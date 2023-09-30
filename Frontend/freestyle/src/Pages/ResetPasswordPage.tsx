@@ -1,19 +1,21 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { verifyResetPassword } from "../Services/ApiService";
+import { toast } from 'react-toastify';
+import { resetPassword, verifyResetPassword } from "../Services/ApiService";
 import StyledInput from "../Components/StyledInput";
 import { ResetPassword } from "../Services/Interfaces";
+import { resetPasswordValidation } from "../Services/Validations";
 
 function ResetPasswordPage() {
 
     const navigate = useNavigate();
-    const location = useLocation().pathname.split('/')[2];
+    const resetId = useLocation().pathname.split('/')[2];
     const [user, setUser] = useState<ResetPassword>({} as ResetPassword);
     const [errors, setError] = useState<string[]>([]);
 
     useEffect(() => {
         const verifyReset = async () => {
-            await verifyResetPassword(location);
+            await verifyResetPassword(resetId);
         }
 
         verifyReset().catch((err) => {
@@ -24,6 +26,26 @@ function ResetPasswordPage() {
         });
         // eslint-disable-next-line
     }, [])
+
+
+    async function handleReset(e: FormEvent) {
+        e.preventDefault();
+        if (!resetPasswordValidation(user, setError)) {
+            return;
+        }
+        //api request
+        await resetPassword(resetId, user.newPassword).then(() => {
+            toast.success('Password reset succesfully');
+            navigate('/login');
+
+        }).catch((err) => {
+
+            if (err) {
+                toast.error('Someting went wrong!');
+                return;
+            }
+        })
+    }
 
     return (
         <div className="container-fluid mb-5">
@@ -46,9 +68,10 @@ function ResetPasswordPage() {
                             placeholder='Confirm new password'
                             setValueFunc={setUser}
                             inputParam='verifyNewPassword'
-                            errorText={errors[0]} />
+                            errorText={errors[1]} />
+
                         <div className="d-grid gap-2 mt-2">
-                            <button className="btn btn-dark">Reset</button>
+                            <button onClick={handleReset} className="btn btn-dark">Reset</button>
                         </div>
                     </>
                 </div>

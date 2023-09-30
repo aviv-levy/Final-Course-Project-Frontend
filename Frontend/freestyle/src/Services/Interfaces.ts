@@ -65,6 +65,13 @@ export interface Order {
     userId: string
 }
 
+export interface ContactUs {
+    name: string,
+    email: string,
+    phone: string,
+    message: string
+}
+
 export interface context {
     isLoggedIn: boolean,
     setIsLoggedIn: Function,
@@ -74,6 +81,11 @@ export interface context {
     // setFilteredCards: Function,
     // darkMode?: boolean,
     // setDarkMode: Function
+}
+
+export interface loading {
+    isLoading: boolean,
+    setIsLoading: Function
 }
 
 export interface CopyCardsContext {

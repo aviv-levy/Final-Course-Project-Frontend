@@ -87,12 +87,13 @@ function LoginPage() {
                                             inputParam='password'
                                             errorText={errors[1]} />
 
-                                        <button onClick={() => setForgotPassword(true)} className='btn border-0 p-0 text-dark '><u>Forgot password?</u></button>
-
                                         <div className="d-grid gap-2 mt-2">
                                             <button onClick={handleClick} className="btn btn-dark">Login</button>
                                         </div>
+
+                                        <button onClick={() => setForgotPassword(true)} className='btn border-0 p-0 text-dark mt-2'><u>Forgot password?</u></button>
                                         <div className="text-center">
+
 
                                             <Error errorText={serverError} />
                                         </div>
@@ -116,7 +117,7 @@ function LoginPage() {
 
                                     <div className='d-flex justify-content-between'>
 
-                                        <Link to={'/contact-us'} className='text-dark align-self-center'>Forgot Email?</Link>
+                                        <Link to={'/contact'} className='text-dark align-self-center'>Forgot Email?</Link>
                                         <button className="btn btn-dark px-4">Next</button>
                                     </div>
                                 </>

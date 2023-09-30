@@ -7,6 +7,7 @@ import { getUserDetails, updateAccount, updateProfileImg } from "../Services/Api
 import { isUpdateUserValid } from "../Services/Validations";
 import CropperBox from "../Components/CropperBox";
 import { fileToBase64 } from "../Utils/fileToString";
+import { toast } from "react-toastify";
 
 function EditUserPage() {
 
@@ -35,27 +36,29 @@ function EditUserPage() {
         //api request
         await updateAccount(user)
             .then(() => {
-                console.log('User has been updated');
+                toast.success('Account has been updated');
             })
             .catch(err => {
                 if (err)
-                    console.log(err);
+                    toast.error('An error accourd');
             })
     }
 
     async function updateImgProfile() {
         await updateProfileImg(uploadedImg).then(() => {
             setUser({ ...user, img: uploadedImg })
+            toast.success('Image has been updated');
         })
             .catch(err => {
                 if (err)
-                    console.log(err);
+                    toast.error('An error accourd');
             })
     }
 
     //Set address in user state when changed
     useEffect(() => {
         setUser({ ...user, address })
+        // eslint-disable-next-line
     }, [address])
 
     //Get user details and put it in inputs

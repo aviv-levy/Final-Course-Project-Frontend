@@ -14,7 +14,6 @@ interface Props {
 }
 
 function ProductItem({ product, addProduct }: Props) {
-
     const [like, setLike] = useState(false);
     const [cart, setCart] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
@@ -84,9 +83,9 @@ function ProductItem({ product, addProduct }: Props) {
                                         }
                                         <div className="size-position h-100">
                                             <div className="product-sizes w-100 d-flex flex-column justify-content-center">
-                                                {product.sizeQuantity.map((sizequantity,index) =>
+                                                {product.sizeQuantity.map((sizequantity, index) =>
                                                     <div key={index} className='sizeview'>
-                                                        {sizequantity.size}
+                                                        <span className={`sizess ${sizequantity.quantity < 1 ? 'not-avilable' : ''}`}>{sizequantity.size} </span>
                                                     </div>
                                                 )}
                                             </div>

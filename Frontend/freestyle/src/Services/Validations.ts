@@ -1,4 +1,4 @@
-import { User } from "./Interfaces";
+import { ContactUs, ResetPassword, User } from "./Interfaces";
 
 const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$')
 // eslint-disable-next-line
@@ -44,15 +44,42 @@ export function isUpdateUserValid(user: User, setError: Function): boolean {
 
     setError(errArray);
 
+    return checkErrors(errArray)
+}
+
+export function resetPasswordValidation(newPasswords: ResetPassword, setError: Function): boolean {
+    const errArray: string[] = [];
+    isPasswordValid(newPasswords.newPassword) ? errArray[0] = 'Password is not valid' : errArray[0] = '';
+
+    newPasswords.newPassword !== newPasswords.verifyNewPassword && errArray[0] === '' ? errArray[1] = "Passwords don't match" : errArray[1] = '';
+
+    setError(errArray);
+
+    return checkErrors(errArray);
+}
+
+export function supportMailValidation(contactMessage: ContactUs, setError: Function): boolean {
+    const errArray: string[] = [];
+    isTextValid(contactMessage.name) ? errArray[0] = 'Please enter your name correctly' : errArray[0] = '';
+    isEmailValid(contactMessage.email) ? errArray[1] = 'Please enter your email correctly' : errArray[1] = '';
+    isPhoneValid(contactMessage.phone) ? errArray[2] = 'Please enter your phone correctly' : errArray[2] = '';
+    isTextValid(contactMessage.message) ? errArray[3] = 'Your message is not valid' : errArray[1] = '';
+
+    setError(errArray);
+
+    return checkErrors(errArray);
+}
+
+
+// If there is an error return false else return true
+function checkErrors(errArray: string[]): boolean {
     let flag = true
     errArray.forEach((err) => {
         if (err !== '')
             flag = false
     })
-
-    return flag;
+    return flag
 }
-
 
 export function isEmailValid(email: string): boolean {
     if (!validEmail.test(email))
