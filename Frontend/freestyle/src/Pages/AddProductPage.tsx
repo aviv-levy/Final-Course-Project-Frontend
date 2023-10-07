@@ -8,6 +8,8 @@ import { addNewProduct } from "../Services/ApiService";
 import CropperBox from "../Components/CropperBox";
 import { sortSizeQuantity } from "../Utils/sorts";
 import { toast } from "react-toastify";
+import { productValidation } from "../Services/Validations";
+import Error from "../Components/Error";
 
 interface SizesBtns {
     size: string;
@@ -21,18 +23,25 @@ interface AddSizeContext {
     setSizesQuantity: Function,
 }
 
+const Brands = ['Nike', 'GAP', 'Adidas', 'American Eagle', 'BillaBong', 'JACK&JONES', 'GANT', 'Terminal X'];
+const Categories = [{ category: 'Shirts', type: 'Letters' }, { category: 'Shoes', type: 'Number' }, { category: 'Pants', type: 'Number' }, { category: 'Dresses', type: 'Letters' }, { category: 'Tops', type: 'Letters' }, { category: 'Underwear', type: 'Letters' }];
+
 // eslint-disable-next-line
 export const AddSizeContext = createContext<AddSizeContext | null>(null);
 
 function AddProductPage() {
 
 
-    const [product, setProduct] = useState<Product>();
+    const [product, setProduct] = useState<Product>({} as Product);
     const [sizes, setSizes] = useState<Array<SizesBtns>>([{ size: "XS", isDisabled: false }, { size: "S", isDisabled: false }, { size: "M", isDisabled: false }, { size: "L", isDisabled: false }, { size: "XL", isDisabled: false }, { size: "XXL", isDisabled: false }])
+    const [sizeType, setSizeType] = useState('Letters');
     const [showCropper, setShowCropper] = useState(false);
     const [uploadedImg, setUploadedImg] = useState('');
     const [sizesQuantity, setSizesQuantity] = useState<Array<SizeQuantity>>([]);
+    const [sizeQuantity, setSizeQuantity] = useState<SizeQuantity>({} as SizeQuantity);
+    const [errorSize, setErrorSize] = useState('');
     const [showAddSize, SetShowAddSize] = useState(false);
+    const [errors, setError] = useState<string[]>([]);
 
     async function fileRecieved(file: File) {
         setUploadedImg(await fileToBase64(file))
@@ -42,6 +51,9 @@ function AddProductPage() {
     async function handleAddProduct(e: FormEvent) {
         e.preventDefault();
 
+        if (!productValidation(product, setError))
+            return;
+
         await addNewProduct(product).then(() => {
             toast.success('Product added');
         }).catch((err) => {
@@ -50,9 +62,26 @@ function AddProductPage() {
         })
     }
 
-    function handleSize(newSize: string) {
-        sizes.forEach(size => size.size === newSize && (size.isDisabled = true));
-        setSizesQuantity(prevState => [...prevState, { size: newSize, quantity: 1 }]);
+    function handleSize(newSize: string | number) {
+        if (!isSizeSet(newSize)) {
+            setErrorSize('')
+            sizes.forEach(size => size.size === newSize && (size.isDisabled = true));
+            setSizesQuantity(prevState => [...prevState, { size: newSize, quantity: 1 }]);
+        }
+        else
+            setErrorSize('This size exist in the list')
+    }
+
+    function isSizeSet(newSize: string | number): boolean {
+        let flag = false;
+        sizesQuantity.forEach((size) => {
+            if (size.size === newSize) {
+                flag = true;
+                return;
+            }
+        })
+
+        return flag
     }
 
     useEffect(() => {
@@ -60,6 +89,16 @@ function AddProductPage() {
         setProduct({ ...product, sizeQuantity: sizesQuantity } as Product);
         // eslint-disable-next-line
     }, [sizesQuantity])
+
+    useEffect(() => {
+        setSizesQuantity([]);
+        sizes.map(btnSize => btnSize.isDisabled = false)
+        Categories.map((category) => {
+            if (category.category === product.category)
+                setSizeType(category.type)
+        })
+        // eslint-disable-next-line
+    }, [product.category])
 
     useEffect(() => {
         setProduct({ ...product, img: uploadedImg } as Product);
@@ -95,20 +134,28 @@ function AddProductPage() {
                         }
                     </div>
 
-                    <div className="col-xl-3 ">
+                    <div className="col-xl-3 mb-3 ">
                         {
                             !showAddSize ?
                                 <div onClick={() => SetShowAddSize(true)} className="add-newSize fs-5 p-2 d-flex align-items-center"><div className="add-newSizePlus badge fs-5 p-1 pt-0 mx-2">+</div>Add New Size</div>
                                 :
                                 <div>
-                                    <div className="text-center">
-                                        {
-                                            sizes?.map((size, index) =>
-                                                !size.isDisabled &&
-                                                <button key={index} onClick={() => handleSize(size.size)} className="btn btn-outline-dark me-2" >{size.size}</button>
-                                            )
-                                        }
-                                    </div>
+                                    {
+                                        sizeType === 'Letters' ?
+                                            <div className="text-center">
+                                                {
+                                                    sizes?.map((size, index) =>
+                                                        !size.isDisabled &&
+                                                        <button key={index} onClick={() => handleSize(size.size)} className="btn btn-outline-dark me-2" >{size.size}</button>
+                                                    )
+                                                }
+                                            </div>
+                                            :
+                                            <div className="d-flex align-items-center">
+                                                <StyledInput inputParam="size" placeholder="Size" setValueFunc={setSizeQuantity} type="number" errorText={errorSize} />
+                                                <button onClick={() => handleSize(sizeQuantity?.size)} className="btn btn-dark ms-2 mb-3">Add</button>
+                                            </div>
+                                    }
                                     <button onClick={() => SetShowAddSize(false)} className="btn btn-dark w-100 my-3">Done</button>
                                 </div>
 
@@ -121,43 +168,47 @@ function AddProductPage() {
                                 }
                             </div>
                         </AddSizeContext.Provider>
+                        <Error errorText={errors[7]}/>
                     </div>
 
                     <div className="col-xl-3 mb-3">
                         <form>
 
-                            <StyledInput inputParam="title" placeholder="Title" setValueFunc={setProduct} type="text" />
-                            <StyledInput inputParam="subtitle" placeholder="SubTitle" setValueFunc={setProduct} type="text" />
-                            <StyledInput inputParam="description" placeholder="Description" setValueFunc={setProduct} type="textArea" />
+                            <StyledInput inputParam="title" placeholder="Title" setValueFunc={setProduct} type="text" errorText={errors[0]} />
+                            <StyledInput inputParam="subtitle" placeholder="SubTitle" setValueFunc={setProduct} type="text" errorText={errors[1]} />
+                            <StyledInput inputParam="description" placeholder="Description" setValueFunc={setProduct} type="textArea" errorText={errors[2]} />
 
                             <span>Brand: </span>
                             <select name="brand"
                                 className='form-select border-black'
                                 onChange={(e) => setProduct((prevState: any) => ({ ...prevState, brand: e.target.value }))}>
-                                <option value={undefined}></option>
-                                <option value="Nike">Nike</option>
-                                <option value="GAP">GAP</option>
-                                <option value="Adidas">Adidas</option>
-                                <option value="American Eagle">American Eagle</option>
-                                <option value="BillaBong">BillaBong</option>
-                                <option value="JACK&JONES">JACK&JONES</option>
-                                <option value="GANT">GANT</option>
-                                <option value="Terminal X">Terminal X</option>
+                                {
+                                    !product.brand &&
+                                    <option value={undefined}></option>
+                                }
+                                {
+                                    Brands.map((brand, index) =>
+                                        <option key={index} value={brand}>{brand}</option>
+                                    )
+                                }
                             </select>
+                            <Error errorText={errors[3]} />
 
                             <span>Category: </span>
                             <select name="category"
                                 className='form-select border-black'
                                 onChange={(e) => setProduct((prevState: any) => ({ ...prevState, category: e.target.value }))}>
-                                <option value={undefined}></option>
-                                <option value="Shirts">Shirts</option>
-                                <option value="Shoes">Shoes</option>
-                                <option value="Pants">Pants</option>
-                                <option value="Dresses">Dresses</option>
-                                <option value="Tops">Tops</option>
-                                <option value="Underwear">Underwear</option>
+                                {
+                                    !product.category &&
+                                    <option value={undefined}></option>
+                                }
+                                {
+                                    Categories.map((category, index) =>
+                                        <option key={index} value={category.category}>{category.category}</option>
+                                    )
+                                }
                             </select>
-
+                            <Error errorText={errors[4]} />
 
                             <label className='w-100'>Gender:</label>
                             <div className="d-flex">
@@ -165,9 +216,10 @@ function AddProductPage() {
                                 <StyledInput inputParam="gender" placeholder="Female" setValueFunc={setProduct} type="radio" id="female" />
                                 <StyledInput inputParam="gender" placeholder="Unisex" setValueFunc={setProduct} type="radio" id="unisex" />
                             </div>
+                            <Error errorText={errors[5]} />
 
                             <div className="d-flex mt-4">
-                                <StyledInput inputParam="price" placeholder="Price" setValueFunc={setProduct} type="number" /> <span className='fs-3'>₪</span>
+                                <StyledInput inputParam="price" placeholder="Price" setValueFunc={setProduct} type="number" errorText={errors[6]} /> <span className='fs-3'>₪</span>
                             </div>
 
                             <div className="w-100 mt-4">

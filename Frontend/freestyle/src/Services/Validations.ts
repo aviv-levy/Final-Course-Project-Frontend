@@ -1,4 +1,4 @@
-import { ContactUs, ResetPassword, User } from "./Interfaces";
+import { Address, ContactUs, Product, ResetPassword, User } from "./Interfaces";
 
 const validEmail = new RegExp('^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$')
 // eslint-disable-next-line
@@ -33,14 +33,11 @@ export function isUpdateUserValid(user: User, setError: Function): boolean {
     if (user.password)
         isPasswordValid(user.password) ? errArray[4] = 'Password is not valid' : errArray[4] = '';
 
-    if (user.address?.city)
-        isTextValid(user.address?.city) ? errArray[5] = 'City is not valid' : errArray[5] = '';
+    isTextValid(user.address?.city) ? errArray[5] = 'City is not valid' : errArray[5] = '';
 
-    if (user.address?.street)
-        isTextValid(user.address?.street) ? errArray[6] = 'Street is not valid' : errArray[6] = '';
+    isTextValid(user.address?.street) ? errArray[6] = 'Street is not valid' : errArray[6] = '';
 
-    if (user.address?.housenum)
-        isHouseNumberValid(user.address?.housenum) ? errArray[7] = 'House Number must be above 0' : errArray[7] = '';
+    isNumberValid(user.address?.housenum) ? errArray[7] = 'House Number must be above 0' : errArray[7] = '';
 
     setError(errArray);
 
@@ -64,6 +61,50 @@ export function supportMailValidation(contactMessage: ContactUs, setError: Funct
     isEmailValid(contactMessage.email) ? errArray[1] = 'Please enter your email correctly' : errArray[1] = '';
     isPhoneValid(contactMessage.phone) ? errArray[2] = 'Please enter your phone correctly' : errArray[2] = '';
     isTextValid(contactMessage.message) ? errArray[3] = 'Your message is not valid' : errArray[1] = '';
+
+    setError(errArray);
+
+    return checkErrors(errArray);
+}
+
+export function productValidation(product: Product, setError: Function,): boolean {
+    const errArray: string[] = [];
+
+    isTextValid(product.title) ? errArray[0] = 'Title is not valid' : errArray[0] = '';
+
+    isTextValid(product.subtitle) ? errArray[1] = 'Sub title is not valid' : errArray[1] = '';
+
+    isTextValid(product.description) ? errArray[2] = 'Description is not valid' : errArray[2] = '';
+
+
+    if (product.brand === undefined)
+        errArray[3] = 'choose brand';
+
+    if (product.category === undefined)
+        errArray[4] = 'choose category';
+
+    isGenderValid(product.gender) ? errArray[5] = 'Choose gender' : errArray[5] = '';
+
+    isNumberValid(product.price) ? errArray[6] = 'Price not valid' : errArray[6] = '';
+
+    product.sizeQuantity.length < 1 ? errArray[7]= 'Add sizes' : errArray[7] = '';
+
+
+    setError(errArray);
+
+    return checkErrors(errArray);
+}
+
+
+
+export function addressValidation(setError: Function, address?: Address): boolean {
+    const errArray: string[] = [];
+
+    isTextValid(address?.city) ? errArray[0] = 'City is not valid' : errArray[0] = '';
+
+    isTextValid(address?.street) ? errArray[1] = 'Street is not valid' : errArray[1] = '';
+
+    isNumberValid(address?.housenum) ? errArray[2] = 'House Number must be above 0' : errArray[2] = '';
 
     setError(errArray);
 
@@ -102,11 +143,17 @@ export function isPhoneValid(phone: string): boolean {
     return false;
 }
 
-export function isTextValid(text: string): boolean {
+export function isTextValid(text?: string): boolean {
     if (!text || text.length < 2)
         return true;
 
     return false;
+}
+export function isGenderValid(gender?: string): boolean {
+    if (gender === 'Male' || gender === 'Female' || gender === 'Unisex')
+        return false;
+
+    return true;
 }
 
 export function isImageValid(url: string): boolean {
@@ -115,8 +162,8 @@ export function isImageValid(url: string): boolean {
 
     return false;
 }
-export function isHouseNumberValid(houseNum: number): boolean {
-    if (!houseNum || houseNum < 1)
+export function isNumberValid(number?: number): boolean {
+    if (!number || number < 1)
         return true;
 
     return false;

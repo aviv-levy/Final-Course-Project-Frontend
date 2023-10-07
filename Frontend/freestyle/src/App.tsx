@@ -23,9 +23,12 @@ import ProductPage from './Pages/ProductPage';
 import ResetPasswordPage from './Pages/ResetPasswordPage';
 import Error404Page from './Pages/Error404Page';
 import { ToastContainer } from 'react-toastify';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import 'react-toastify/dist/ReactToastify.css';
 import ContactPage from './Pages/ContactPage';
 import Loading from './Components/Loading';
+import OrdersPage from './Pages/OrdersPage';
+import AdminPage from './Pages/AdminPage';
 
 
 export const UserContext = createContext<context | null>(null);
@@ -68,26 +71,30 @@ function App() {
             <Navbar />
             <ToastContainer position='top-center' />
             <LoadingContext.Provider value={{ isLoading, setIsLoading }}>
-              <Routes>
+              <PayPalScriptProvider options={{"clientId": process.env.REACT_APP_PAYPAL_CLIENT_ID as string}}>
+                <Routes>
 
-                <Route path='/' element={<HomePage />} />
-                <Route path='/about' element={<AboutPage />} />
-                <Route path='/contact' element={<ContactPage />} />
-                <Route path='/men' element={<GenderPage />} />
-                <Route path='/women' element={<GenderPage />} />
-                <Route path='/men/:category' element={<ProductsPage />} />
-                <Route path='/women/:category' element={<ProductsPage />} />
-                <Route path='/login' element={<LoginPage />} />
-                <Route path='/register' element={<RegisterPage />} />
-                <Route path='/reset-password/:token' element={<ResetPasswordPage />} />
-                <Route path='/manageproducts' element={<ManageProductsPage />} />
-                <Route path='/manageproducts/addProduct' element={<AddProductPage />} />
-                <Route path='/favorites' element={<FavoritesPage />} />
-                <Route path='/cart' element={<CartPage />} />
-                <Route path='/account/:userId' element={<EditUserPage />} />
-                <Route path='/product/:productId' element={<ProductPage />} />
-                <Route path='/404' element={<Error404Page />} />
-              </Routes>
+                  <Route path='/' element={<HomePage />} />
+                  <Route path='/about' element={<AboutPage />} />
+                  <Route path='/contact' element={<ContactPage />} />
+                  <Route path='/men' element={<GenderPage />} />
+                  <Route path='/women' element={<GenderPage />} />
+                  <Route path='/men/:category' element={<ProductsPage />} />
+                  <Route path='/women/:category' element={<ProductsPage />} />
+                  <Route path='/login' element={<LoginPage />} />
+                  <Route path='/register' element={<RegisterPage />} />
+                  <Route path='/reset-password/:token' element={<ResetPasswordPage />} />
+                  <Route path='/manageproducts' element={<ManageProductsPage />} />
+                  <Route path='/manageproducts/addProduct' element={<AddProductPage />} />
+                  <Route path='/orders' element={<OrdersPage />} />
+                  <Route path='/favorites' element={<FavoritesPage />} />
+                  <Route path='/cart' element={<CartPage />} />
+                  <Route path='/account/:userId' element={<EditUserPage />} />
+                  <Route path='/product/:productId' element={<ProductPage />} />
+                  <Route path='/admin' element={<AdminPage />} />
+                  <Route path='/404' element={<Error404Page />} />
+                </Routes>
+              </PayPalScriptProvider>
             </LoadingContext.Provider>
 
             <Footer />

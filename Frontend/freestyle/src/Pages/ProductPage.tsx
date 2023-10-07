@@ -8,14 +8,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Accordion from "../Components/Accordion";
 import { getBrandDetails, returns } from "../Utils/brandDetails";
 import { UserContext } from "../App";
+import { toast } from "react-toastify";
 
+interface SelectedSize {
+    index: number;
+    size: string | number;
+}
 
 function ProductPage() {
 
     const [product, setProduct] = useState<Product>({} as Product);
     const [isLoading, setIsLoading] = useState(true);
     const [outOfStock, setOutOfStock] = useState(false);
-    const [selectedSize, setSelectedSize] = useState<number>();
+    const [selectedSize, setSelectedSize] = useState<SelectedSize>({} as SelectedSize);
     const [isFavorite, setIsFavorite] = useState(false);
     const { productId } = useParams();
 
@@ -40,14 +45,30 @@ function ProductPage() {
         // eslint-disable-next-line
     }, [])
 
-    function handleSelectedSize(index: number, itemQuantity: number) {
-        setSelectedSize(index)
+    function handleSelectedSize(selected: SelectedSize, itemQuantity: number) {
+        setSelectedSize(selected)
         itemQuantity < 1 ? setOutOfStock(true) : setOutOfStock(false)
     }
 
     //Add the product to cart
     async function addCart() {
-        await addToCart(product._id)
+        let flag = false
+        userDetails?.userDetails?.cartProducts?.forEach((cartProduct) => {
+            if (cartProduct.productId === product._id)
+                 cartProduct.sizeQuantity.quantity < 10 ? flag = false : flag = true
+        })
+        if (outOfStock) {
+            toast.error("Out of stock")
+            return;
+        }
+        else if (selectedSize.size === undefined) {
+            toast.error("Please select a size")
+            return;
+        }
+        else if (flag)
+            return;
+
+        await addToCart(product._id, { size: selectedSize.size, quantity: 1 })
             .then((user) => {
                 userDetails?.setUserDetails(user)
             })
@@ -102,9 +123,9 @@ function ProductPage() {
                                 {
                                     product.sizeQuantity.map((item, index) =>
                                         <span key={index}
-                                            className={`size me-3 ${selectedSize === index ? 'size-selected' : ''}
+                                            className={`size me-3 ${selectedSize?.index === index ? 'size-selected' : ''}
                                                     ${item.quantity < 1 ? 'not-avilable' : ''}`}
-                                            onClick={() => handleSelectedSize(index, item.quantity)}
+                                            onClick={() => handleSelectedSize({ index: index, size: item.size }, item.quantity)}
                                         >{item.size}</span>
                                     )
                                 }

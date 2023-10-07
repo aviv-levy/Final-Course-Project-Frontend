@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ProductItem from "../Components/ProductItem";
 import { Product } from "../Services/Interfaces";
 import { getMyProducts } from "../Services/ApiService";
+import ProductsLayout from "../Components/ProductsLayout";
 
 function ManageProductsPage() {
 
@@ -22,16 +23,14 @@ function ManageProductsPage() {
     }, [])
 
     return (
-        <div className='container-fluid my-4'>
-            <div className="row row-cols-1 row-cols-md-3 mx-4 g-4">
-                <ProductItem product={{} as Product} addProduct={true} />
-                {
-                    Products?.map(product =>
-                        <ProductItem key={product._id} product={product} />
-                    )
-                }
-            </div>
-        </div>
+        <ProductsLayout>
+            <ProductItem product={{} as Product} addProduct={true} />
+            {
+                Products?.map(product =>
+                    <ProductItem key={product._id} product={product} />
+                )
+            }
+        </ProductsLayout>
     );
 }
 

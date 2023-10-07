@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
 
-    const [user, setUser] = useState<User>({ firstname: '', lastname: '', email: '', phone: '', password: '' });
+    const [user, setUser] = useState<User>({ firstname: '', lastname: '', email: '', phone: '', password: '', biz: false });
     const [errors, setError] = useState<string[]>([]);
     const [serverError, setServerError] = useState('');
 
@@ -20,7 +20,7 @@ function RegisterPage() {
         if (!isRegisterUserValid(user, setError))
             return;
 
-            //api request
+        //api request
         await addNewUser(user).then(() => {
             //created React Alert
             navigate('/login');
@@ -80,6 +80,15 @@ function RegisterPage() {
                                 setValueFunc={setUser}
                                 inputParam="password"
                                 errorText={errors[4]} />
+
+                            <div className="form-group ">
+                                <input
+                                    id="biz"
+                                    type='checkbox'
+                                    checked={user.biz}
+                                    onChange={() => setUser({ ...user, biz: !user.biz })} />
+                                <label htmlFor="biz" className="mx-2">Signup as business </label>
+                            </div>
 
                             <div className="d-grid gap-2 mt-4">
                                 <button onClick={handleClick} className="btn btn-dark">Register</button>

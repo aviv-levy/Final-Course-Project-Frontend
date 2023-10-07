@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import Title from "../Components/Title";
 import { Product } from "../Services/Interfaces";
 import { getFavoriteProducts } from "../Services/ApiService";
 import ProductItem from "../Components/ProductItem";
 import { UserContext } from "../App";
+import ProductsLayout from "../Components/ProductsLayout";
 
 function FavoritesPage() {
 
@@ -26,21 +26,15 @@ function FavoritesPage() {
     }, [userDetails?.userDetails?.favoriteProducts])
 
     return (
-        <>
-            <Title title='Favorites' />
+            <ProductsLayout>
+                {
+                    
+                    Products?.map(product =>
+                        <ProductItem key={product._id} product={product} />
+                    )
+                }
+            </ProductsLayout>
 
-            <div className='container-fluid my-4'>
-                <div className="row row-cols-1 row-cols-md-3 mx-4 g-4">
-                    {
-                        Products?.map(product =>
-                            <ProductItem key={product._id} product={product} />
-                        )
-                    }
-                </div>
-            </div>
-
-
-        </>
     );
 }
 

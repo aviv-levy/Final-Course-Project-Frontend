@@ -49,7 +49,7 @@ export interface SizeQuantity {
 }
 interface ProductQuantity {
     productId: string,
-    quantity: SizeQuantity
+    sizeQuantity: SizeQuantity
 }
 
 export interface Address {
@@ -63,6 +63,11 @@ export interface Order {
     products: Array<ProductQuantity>,
     address: Address,
     userId: string
+}
+
+export interface OrderProduct {
+    product: Product,
+    sizeQuantity: SizeQuantity
 }
 
 export interface ContactUs {
@@ -91,4 +96,9 @@ export interface loading {
 export interface CopyCardsContext {
     copyCards?: Array<Product>,
     setCopyCards: Function
+}
+
+export interface PaypalDetails {
+    address: Address,
+    orderProducts?: Array<OrderProduct>
 }

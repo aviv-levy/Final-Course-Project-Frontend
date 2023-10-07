@@ -6,11 +6,11 @@ const productModelScheme = require('../Schemas/productSchema.js');
 
 // JOI Validations
 const baselineValidation = {
-    sizeQuantity: JOI.array().items( 
+    sizeQuantity: JOI.array().items(
         JOI.object().keys({
-        size: JOI.string().alphanum().required(),
-        quantity: JOI.number().positive().greater(0).required()
-    })),
+            size: JOI.alternatives().try(JOI.string().alphanum(), JOI.number()).required(),
+            quantity: JOI.number().positive().greater(0).required()
+        })),
     title: JOI.string().required().min(2).max(20),
     subtitle: JOI.string().required().min(2).max(20),
     description: JOI.string(),

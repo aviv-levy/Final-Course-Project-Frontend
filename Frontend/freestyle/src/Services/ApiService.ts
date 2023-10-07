@@ -1,6 +1,7 @@
 import axios from "axios";
-import { Product, LoginUser, User, ContactUs } from "./Interfaces";
+import { Product, LoginUser, User, ContactUs, SizeQuantity, Address, OrderProduct } from "./Interfaces";
 import { getToken } from "../auth/TokenManager";
+import { OrderResponseBody } from "@paypal/paypal-js";
 
 
 
@@ -157,6 +158,24 @@ export async function getFavoriteProducts(): Promise<Array<Product>> {
     }
 }
 
+// Get user cart products
+export async function getCartProducts(): Promise<Array<Product>> {
+    try {
+        const result = await axios.get<Array<Product>>(serverUrl + `products/getCartProducts`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + getToken()
+            },
+        })
+
+        return result.data;
+
+    } catch (error: any) {
+        const errorText = error.response.data
+        throw errorText;
+    }
+}
+
 
 // Add new product
 export async function addNewProduct(product?: Product): Promise<Product> {
@@ -174,6 +193,22 @@ export async function addNewProduct(product?: Product): Promise<Product> {
         throw httpStatusCode;
     }
 }
+
+// Send Reset Mail to reset account
+export async function sendResetMail(email: string): Promise<void> {
+    try {
+        await axios.get(serverUrl + `resetAccount/${email}`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+
+    } catch (error: any) {
+        const httpStatusCode = error.response.status
+        throw httpStatusCode;
+    }
+}
+
 
 // Verify if link is expired
 export async function verifyResetPassword(token: string): Promise<void> {
@@ -237,9 +272,62 @@ export async function likeProduct(productId?: string): Promise<User> {
     }
 }
 // Update user cart by product Id
-export async function addToCart(productId?: string): Promise<User> {
+export async function addToCart(productId?: string, sizeQuantity?: SizeQuantity): Promise<User> {
     try {
-        const result = await axios.put<User>(serverUrl + `user/addtocart/${productId}`, {}, {
+        const result = await axios.put<User>(serverUrl + 'user/addtocart', { productId, size: sizeQuantity?.size, quantity: sizeQuantity?.quantity }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
+            },
+        })
+
+        return result.data;
+
+    } catch (error: any) {
+        const errorText = error.response.data
+        throw errorText;
+    }
+}
+// Update user cart by product Id
+export async function removeFromCart(productId?: string): Promise<User> {
+    try {
+        const result = await axios.put<User>(serverUrl + `user/removeFromCart/${productId}`, {}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
+            },
+        })
+
+        return result.data;
+
+    } catch (error: any) {
+        const errorText = error.response.data
+        throw errorText;
+    }
+}
+
+// Remove all products from user
+export async function removeAllFromCart(): Promise<User> {
+    try {
+        const result = await axios.delete<User>(serverUrl + 'user/removeAllFromCart', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
+            },
+        })
+
+        return result.data;
+
+    } catch (error: any) {
+        const errorText = error.response.data
+        throw errorText;
+    }
+}
+
+// Update user cart by product Id
+export async function changePrdouctCartAmount(productId?: string, quantity?: number): Promise<User> {
+    try {
+        const result = await axios.put<User>(serverUrl + 'user/changePrdouctCartAmount', { productId, quantity }, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getToken()}`
@@ -356,5 +444,21 @@ export async function updateUserBiz(userId?: string): Promise<Array<User>> {
     } catch (error: any) {
         const errorText = error.response.data
         throw errorText;
+    }
+}
+
+// Add new product
+export async function createOrder(paypalPayment?: OrderResponseBody, address?: Address, products?: Array<OrderProduct>): Promise<void> {
+    try {
+        await axios.post(serverUrl + 'orders/createOrder', { paypalPayment, address, products }, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + getToken()
+            },
+        })
+
+    } catch (error: any) {
+        const httpStatusCode = error.response.data
+        throw httpStatusCode;
     }
 }

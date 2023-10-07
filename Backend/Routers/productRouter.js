@@ -62,15 +62,30 @@ router.get('/getFav', verifyToken, async (req, res) => {
     try {
         const user = await UserModel.findOne({ _id: req.id });
 
-        const favCards = await ProductModel.find({ _id: { $in: user.favoriteProducts } })
-        res.status(200).json(favCards);
+        const favProducts = await ProductModel.find({ _id: { $in: user.favoriteProducts } })
+        res.status(200).json(favProducts);
 
     } catch (err) {
         res.status(500).send(err.message);
     }
 })
 
-// http://localhost:4500/cards/deleteProduct/:productId
+// http://localhost:4500/products/getCartProducts
+router.get('/getCartProducts', verifyToken, async (req, res) => {
+    try {
+        const user = await UserModel.findOne({ _id: req.id });
+        const userCartProducts = []
+        user.cartProducts.forEach(product => userCartProducts.push(product.productId))
+       
+        const cartProducts = await ProductModel.find({ _id: { $in: userCartProducts } })
+        res.status(200).json(cartProducts);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send(err.message);
+    }
+})
+
+// http://localhost:4500/products/deleteProduct/:productId
 router.delete('/deleteProduct/:productId', verifyToken, async (req, res) => {
     try {
         const productId = req.params.productId;
@@ -87,7 +102,7 @@ router.delete('/deleteProduct/:productId', verifyToken, async (req, res) => {
 
         await ProductModel.deleteOne({ _id: productId });
 
-        res.status(204).send('Card has been deleted');
+        res.status(204).send('Product has been deleted');
 
     } catch (err) {
         res.status(500).send(err.message);

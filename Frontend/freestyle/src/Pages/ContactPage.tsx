@@ -27,7 +27,7 @@ function ContactPage() {
             toast.success('Your message has been sent to us');
             setContactMessage({} as ContactUs)
         }).catch((err) => {
-
+            loading?.setIsLoading(false);
             if (err) {
                 toast.error('An error accoured while sending')
                 return;

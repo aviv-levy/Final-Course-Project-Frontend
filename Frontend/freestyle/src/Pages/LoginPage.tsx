@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { setToken } from '../auth/TokenManager';
 import { isEmailValid } from '../Services/Validations';
 import Error from '../Components/Error';
-import { login } from '../Services/ApiService';
-import { UserContext } from '../App';
+import { login, sendResetMail } from '../Services/ApiService';
+import { LoadingContext, UserContext } from '../App';
 import StyledInput from '../Components/StyledInput';
 import { LoginUser } from '../Services/Interfaces';
+import { toast } from 'react-toastify';
 
 function LoginPage() {
 
@@ -17,6 +18,7 @@ function LoginPage() {
 
     const isLoggedIn = useContext(UserContext);
     const userDetails = useContext(UserContext);
+    const loading = useContext(LoadingContext);
 
     const navigate = useNavigate();
 
@@ -59,6 +61,31 @@ function LoginPage() {
             }
         })
     }
+
+    //Handle Reset button
+    async function handleReset(e: FormEvent) {
+        e.preventDefault();
+        if (!validate()) {
+            return;
+        }
+        //api request
+        loading?.setIsLoading(true);
+        await sendResetMail(user.email).then(() => {
+            loading?.setIsLoading(false);
+            setServerError('');
+            toast.success('Reset link was sent to your Email')
+            setForgotPassword(false);
+
+        }).catch((err) => {
+            if (err === 401) {
+                loading?.setIsLoading(false);
+                toast.error('Email not found')
+                setServerError('Email not found');
+                return;
+            }
+        })
+    }
+
 
     return (
         <>
@@ -106,20 +133,23 @@ function LoginPage() {
                                         <h1>Account Recovery</h1>
                                         <span>Recover you FreeStyle Account</span>
                                     </div>
-                                    <div className='mt-3'>
-                                        <StyledInput
-                                            type='text'
-                                            placeholder='Email'
-                                            setValueFunc={setUser}
-                                            inputParam='email'
-                                            errorText={errors[0]} />
-                                    </div>
+                                    <form>
+                                        <div className='mt-3'>
+                                            <StyledInput
+                                                type='text'
+                                                placeholder='Email'
+                                                setValueFunc={setUser}
+                                                inputParam='email'
+                                                errorText={errors[0]} />
+                                        </div>
 
-                                    <div className='d-flex justify-content-between'>
+                                        <div className='d-flex justify-content-between'>
 
-                                        <Link to={'/contact'} className='text-dark align-self-center'>Forgot Email?</Link>
-                                        <button className="btn btn-dark px-4">Next</button>
-                                    </div>
+                                            <Link to={'/contact'} className='text-dark align-self-center'>Forgot Email?</Link>
+                                            <button onClick={handleReset} className="btn btn-dark px-4">Next</button>
+                                        </div>
+                                        <Error errorText={serverError} />
+                                    </form>
                                 </>
                         }
                     </div>

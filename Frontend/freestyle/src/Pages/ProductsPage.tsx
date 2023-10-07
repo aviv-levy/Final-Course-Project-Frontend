@@ -3,6 +3,7 @@ import ProductItem from "../Components/ProductItem";
 import { Product } from "../Services/Interfaces";
 import { getProductByCategory } from "../Services/ApiService";
 import { useLocation } from "react-router-dom";
+import ProductsLayout from "../Components/ProductsLayout";
 
 function ProductsPage() {
 
@@ -28,15 +29,13 @@ function ProductsPage() {
     }, [])
 
     return (
-        <div className='container-fluid my-4'>
-            <div className="row row-cols-1 row-cols-md-3 mx-4 g-4">
-                {
-                    Products?.map(product =>
-                        <ProductItem key={product._id} product={product} />
-                    )
-                }
-            </div>
-        </div>
+        <ProductsLayout>
+            {
+                Products?.map(product =>
+                    <ProductItem key={product._id} product={product} />
+                )
+            }
+        </ProductsLayout>
     );
 }
 

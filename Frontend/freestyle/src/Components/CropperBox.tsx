@@ -1,4 +1,4 @@
-import { useState, useCallback, FormEvent, useContext, useEffect } from 'react'
+import { useState, useCallback, FormEvent, useEffect } from 'react'
 import '../CSS/Cropper.css'
 import Cropper, { Area, Point } from 'react-easy-crop'
 import getCroppedImg from '../Utils/cropImage';
@@ -25,7 +25,6 @@ function CropperBox({ uploadingImage, setShowCropper, setCroppedImage, updateImg
     const onCropComplete = useCallback(
         (croppedArea: Area, croppedAreaPixels: Area) => {
             setCroppedAreaPixels(croppedAreaPixels)
-            console.log(croppedArea, croppedAreaPixels);
         },
         []
     );
@@ -70,6 +69,7 @@ function CropperBox({ uploadingImage, setShowCropper, setCroppedImage, updateImg
         <Modal
             isOpen={true}
             onRequestClose={closeModal}
+            ariaHideApp={false}
             contentLabel="Modal"
         >
             <div className="App">

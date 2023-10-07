@@ -34,7 +34,6 @@ function Navbar() {
     }, [userDetails?.userDetails?.favoriteProducts, userDetails?.userDetails?.cartProducts])
 
     return (
-        // "navbar navbar-expand-lg bg-primary"
         <nav className='navbar navbar-expand-lg bg-dark' data-bs-theme="dark">
             <div className="container-fluid">
                 <Link to='/' className="navbar-brand"><strong className='fs-2 ms-1'>FreeStyle</strong> </Link>
@@ -45,15 +44,21 @@ function Navbar() {
                             <NavLink to="/about" className="nav-link active" aria-current="page">About</NavLink>
                         </li>
                         {
-                            isLoggedIn?.isLoggedIn &&
+                            isLoggedIn?.isLoggedIn && userDetails?.userDetails?.biz &&
                             <>
                                 <li className="nav-item">
                                     <NavLink to="/manageproducts" className="nav-link active" aria-current="page">Products</NavLink>
                                 </li>
-
                                 <li className="nav-item">
-                                    <NavLink to="/sandbox" className="nav-link active" aria-current="page">Sandbox</NavLink>
+                                    <NavLink to="/orders" className="nav-link active" aria-current="page">Orders</NavLink>
                                 </li>
+
+                                {
+                                    userDetails.userDetails.isAdmin &&
+                                    <li className="nav-item">
+                                        <NavLink to="/admin" className="nav-link active" aria-current="page">Admin</NavLink>
+                                    </li>
+                                }
                             </>
                         }
                     </ul>
@@ -114,7 +119,11 @@ function Navbar() {
                                                     className="navImg"
                                                     alt="user Pic" />
                                             </button>
-                                            <ul className={'dropdown-menu dropdown-menu-end bg-white'}>
+                                            <ul className={'dropdown-menu dropdown-menu-end bg-white border border-secondary border-opacity-10'}>
+                                                <li><Link to='/manageproducts' className="nav-link active dropdown-color text-dark">Products</Link></li>
+                                                <li><hr className="my-1" /></li>
+                                                <li><Link to='/orders' className="nav-link active dropdown-color text-dark">Orders</Link></li>
+                                                <li><hr className="my-1" /></li>
                                                 <li><Link to={`/account/${userDetails?.userDetails?._id}`} className="nav-link active dropdown-color text-dark">Account</Link></li>
                                                 <li><hr className="my-1" /></li>
                                                 <li>

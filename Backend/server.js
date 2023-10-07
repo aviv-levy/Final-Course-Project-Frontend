@@ -26,6 +26,7 @@ const userRouter = require('./Routers/userRouter.js')
 const productRouter = require('./Routers/productRouter.js')
 const resetAccountRouter = require('./Routers/resetAccountRouter.js')
 const contactUsRouter = require('./Routers/contactUsRouter.js')
+const ordersRouter = require('./Routers/ordersRouter.js')
 
 
 async function main() {
@@ -48,6 +49,7 @@ app.use('/user', verifyToken, userRouter);
 app.use('/products', productRouter);
 app.use('/resetAccount', resetAccountRouter);
 app.use('/contact', contactUsRouter);
+app.use('/orders', ordersRouter);
 
 
 // http://localhost:4500/initilaize
