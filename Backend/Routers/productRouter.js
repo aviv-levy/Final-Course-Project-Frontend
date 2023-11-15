@@ -80,7 +80,22 @@ router.get('/getCartProducts', verifyToken, async (req, res) => {
         const cartProducts = await ProductModel.find({ _id: { $in: userCartProducts } })
         res.status(200).json(cartProducts);
     } catch (err) {
-        console.log(err.message);
+        res.status(500).send(err.message);
+    }
+})
+
+//http://localhost:4500/products/updateProduct
+router.put('/updateProduct',verifyToken ,async (req, res) => {
+    try {
+        const valRes = ProductModel.validatePost(req.body);
+        if (valRes.error){
+            return res.status(400).send(valRes.error);
+        }
+
+        await ProductModel.updateOne({ _id: req.body._id }, { $set: req.body })
+
+        res.status(201).json('Product has been updated');
+    } catch (err) {
         res.status(500).send(err.message);
     }
 })

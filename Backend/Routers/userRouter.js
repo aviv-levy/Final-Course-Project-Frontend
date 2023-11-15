@@ -24,7 +24,6 @@ router.post('/addProduct', async (req, res) => {
             delete req.body.img;
         const valRes = ProductModel.validatePost(req.body); // synchronized method for running validations
         if (valRes.error) {
-            console.log(valRes.error);
             return res.status(400).send(valRes.error);
         }
         const product = new ProductModel(req.body);
@@ -49,7 +48,6 @@ router.put('/updateAccount', async (req, res) => {
 
         const valRes = userUpdateModel.validatePost(req.body);
         if (valRes.error) {
-            console.log(valRes.error);
             return res.status(400).send(valRes.error);
         }
 
@@ -118,7 +116,6 @@ router.put('/likeProduct/:productId', async (req, res) => {
 router.put('/addtocart', async (req, res) => {
     try {
         const { productId, size, quantity } = req.body;
-        console.log(productId, size, quantity);
         let user = await userDetailsModel.findOne({ _id: req.id });
         let flag = true;
 
@@ -153,7 +150,6 @@ router.put('/removeFromCart/:productId', async (req, res) => {
         user.password = undefined;
         res.status(201).json(user);
     } catch (err) {
-        console.log(err.message);
         res.status(500).send(err.message);
     }
 })
@@ -191,7 +187,6 @@ router.put('/changePrdouctCartAmount', async (req, res) => {
         user.password = undefined;
         res.status(201).json(user);
     } catch (err) {
-        console.log(err.message);
         res.status(500).send(err.message);
     }
 })

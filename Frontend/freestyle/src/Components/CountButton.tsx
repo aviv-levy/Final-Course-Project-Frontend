@@ -6,14 +6,15 @@ import { AddSizeContext } from "../Pages/AddProductPage";
 
 interface Props {
     size: number | string;
+    amount?: number;
     removeButton?: boolean;
 }
 
 
-function CountButton({ size, removeButton }: Props) {
+function CountButton({ size, amount, removeButton }: Props) {
 
     const sizesContext = useContext(AddSizeContext);
-    const [quantity, setQuantity] = useState(1)
+    const [quantity, setQuantity] = useState(amount || 1)
 
     //Set new size and quantity to a product
     function setSize(newQuantity: number) {
@@ -35,6 +36,7 @@ function CountButton({ size, removeButton }: Props) {
 
     //Handle Remove count button
     function handleRemove() {
+        sizesContext?.setRefreshSort(false);
         sizesContext?.sizes.forEach(disabledSize => disabledSize.size === size && (disabledSize.isDisabled = false));
         sizesContext?.setSizes(sizesContext?.sizes);
         sizesContext?.setSizesQuantity(sizesContext?.sizesQuantity.filter(item => item.size !== size))

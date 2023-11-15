@@ -11,11 +11,13 @@ interface Props {
     setValueFunc: Function;
     id?: string;
     errorText?: string;
+    checked?: boolean;
 }
 
-function StyledInput({ type, inputValue, placeholder, setValueFunc, inputParam, id, errorText }: Props) {
+function StyledInput({ type, inputValue, placeholder, setValueFunc, inputParam, id, errorText, checked }: Props) {
 
     const [inputValueState, setInputValueState] = useState(inputValue);
+    const [check,setCheck] = useState(checked)
 
     return (
         <>
@@ -39,6 +41,7 @@ function StyledInput({ type, inputValue, placeholder, setValueFunc, inputParam, 
                             type === 'textArea' ?
                                 <div className="form-group input-block mb-3">
                                     <textarea placeholder='' rows={5} className='h-50'
+                                        value={inputValueState || ''}
                                         onChange={(e) => {
                                             setInputValueState(e.target.value)
                                             setValueFunc((prevState: any) => ({ ...prevState, [inputParam]: e.target.value }))

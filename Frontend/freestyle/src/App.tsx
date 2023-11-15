@@ -29,6 +29,7 @@ import ContactPage from './Pages/ContactPage';
 import Loading from './Components/Loading';
 import OrdersPage from './Pages/OrdersPage';
 import AdminPage from './Pages/AdminPage';
+import EditProductPage from './Pages/EditProductPage';
 
 
 export const UserContext = createContext<context | null>(null);
@@ -91,6 +92,7 @@ function App() {
                   <Route path='/cart' element={<CartPage />} />
                   <Route path='/account/:userId' element={<EditUserPage />} />
                   <Route path='/product/:productId' element={<ProductPage />} />
+                  <Route path='/editProduct/:productId' element={<EditProductPage />} />
                   <Route path='/admin' element={<AdminPage />} />
                   <Route path='/404' element={<Error404Page />} />
                 </Routes>

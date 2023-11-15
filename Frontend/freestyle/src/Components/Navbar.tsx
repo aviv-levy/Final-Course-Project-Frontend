@@ -44,13 +44,16 @@ function Navbar() {
                             <NavLink to="/about" className="nav-link active" aria-current="page">About</NavLink>
                         </li>
                         {
+                            isLoggedIn?.isLoggedIn &&
+                            <li className="nav-item">
+                                <NavLink to="/orders" className="nav-link active" aria-current="page">Orders</NavLink>
+                            </li>
+                        }
+                        {
                             isLoggedIn?.isLoggedIn && userDetails?.userDetails?.biz &&
                             <>
                                 <li className="nav-item">
                                     <NavLink to="/manageproducts" className="nav-link active" aria-current="page">Products</NavLink>
-                                </li>
-                                <li className="nav-item">
-                                    <NavLink to="/orders" className="nav-link active" aria-current="page">Orders</NavLink>
                                 </li>
 
                                 {
@@ -120,8 +123,13 @@ function Navbar() {
                                                     alt="user Pic" />
                                             </button>
                                             <ul className={'dropdown-menu dropdown-menu-end bg-white border border-secondary border-opacity-10'}>
-                                                <li><Link to='/manageproducts' className="nav-link active dropdown-color text-dark">Products</Link></li>
-                                                <li><hr className="my-1" /></li>
+                                                {
+                                                    isLoggedIn?.isLoggedIn && userDetails?.userDetails?.biz &&
+                                                    <>
+                                                        <li><Link to='/manageproducts' className="nav-link active dropdown-color text-dark">Products</Link></li>
+                                                        <li><hr className="my-1" /></li>
+                                                    </>
+                                                }
                                                 <li><Link to='/orders' className="nav-link active dropdown-color text-dark">Orders</Link></li>
                                                 <li><hr className="my-1" /></li>
                                                 <li><Link to={`/account/${userDetails?.userDetails?._id}`} className="nav-link active dropdown-color text-dark">Account</Link></li>

@@ -9,13 +9,13 @@ function getSizeValue(size: string | number): number {
         case "L": return 3;
         case "XL": return 4;
         case "XXL": return 5;
-        default: return -1; // Handle unknown sizes
+        default: return +size; // Handle unknown sizes
     }
 }
 
 export function sortSizeQuantity(array: Array<SizeQuantity>) {
     // Sort the t-shirt sizes array
     
-    if (array)
         array.sort((a, b) => getSizeValue(a.size) - getSizeValue(b.size));
+        
 }

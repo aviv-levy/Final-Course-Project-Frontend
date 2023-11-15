@@ -194,6 +194,24 @@ export async function addNewProduct(product?: Product): Promise<Product> {
     }
 }
 
+// Update product details
+export async function updateProduct(product?: Product): Promise<Product> {
+    try {
+        const result = await axios.put<Product>(serverUrl + `products/updateProduct`, product, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
+            },
+        })
+
+        return result.data;
+
+    } catch (error: any) {
+        const errorText = error.response.data
+        throw errorText;
+    }
+}
+
 // Send Reset Mail to reset account
 export async function sendResetMail(email: string): Promise<void> {
     try {

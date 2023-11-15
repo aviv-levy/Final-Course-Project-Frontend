@@ -124,7 +124,7 @@ function ProductItem({ product, addProduct }: Props) {
                                                             <span className='product-options-color'>My List</span>
                                                         </button>
                                                         {
-                                                            userDetails?.isLoggedIn && userDetails.userDetails?._id === product.userId &&
+                                                            userDetails?.isLoggedIn && (userDetails.userDetails?._id === product.userId || userDetails.userDetails?.isAdmin) &&
                                                             <>
                                                                 <button onClick={() => navigate(`/editProduct/${product._id}`)} className='btn border-0 text-white d-flex flex-column align-items-center p-1'>
                                                                     <FontAwesomeIcon icon={faEdit} className='text-white' />

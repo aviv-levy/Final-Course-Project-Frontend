@@ -1,0 +1,307 @@
+{
+    "users": [
+        {
+            "_id": "648d6d9832b6ab2296a6c2dd",
+            "firstname": "Aviv",
+            "lastname": "Levy",
+            "phone": "052-6359984",
+            "email": "admin@gmail.com",
+            "password": "Aa!12345",
+            "biz": true,
+            "isAdmin": true
+        },
+        {
+            "_id": "6494a4e83bd3462dd4bc85a9",
+            "firstname": "Maor",
+            "lastname": "Shvartz",
+            "phone": "050-7435684",
+            "email": "maor@gmail.com",
+            "password": "Aa!12345",
+            "biz": true
+        },
+        {
+            "_id": "6504a4e32bd3462dd4bc74b6",
+            "firstname": "Noa",
+            "lastname": "Cohen",
+            "phone": "050-7435684",
+            "email": "noa@gmail.com",
+            "password": "Aa!12345",
+            "biz": true
+        },
+        {
+            "_id": "648ddea51355bd71709f38ed",
+            "firstname": "Nir",
+            "lastname": "Lamesh",
+            "phone": "050-5548832",
+            "email": "nir@gmail.com",
+            "password": "Aa!12345",
+            "biz": false
+        }
+    ],
+    "products": [
+        {
+            "_id": "654f8cc616b5cc2b8fc483b9",
+            "title": "Eagle T-shirt",
+            "subtitle": "American Eagle",
+            "description": "Brand new basic T-shirt with eagle drawn.",
+            "brand": "American Eagle",
+            "category": "Shirts",
+            "gender": "Male",
+            "price": 69,
+            "sizeQuantity": [
+                {
+                    "size": "S",
+                    "quantity": 200
+                },
+                {
+                    "size": "M",
+                    "quantity": 600
+                },
+                {
+                    "size": "L",
+                    "quantity": 600
+                },
+                {
+                    "size": "XL",
+                    "quantity": 600
+                },
+                {
+                    "size": "XXL",
+                    "quantity": 150
+                }
+            ],
+            "img": "",
+            "userId": "6494a4e83bd3462dd4bc85a9"
+        },
+        {
+            "_id": "654f8748001a45294a8567e2",
+            "title": "Air Jordan 1",
+            "subtitle": "Nike Jordan",
+            "description": "Low shoes, created by Nike and most popular shoes in the world.",
+            "brand": "Nike",
+            "category": "Shoes",
+            "gender": "Male",
+            "price": 899,
+            "sizeQuantity": [
+                {
+                    "size": 42,
+                    "quantity": 30
+                },
+                {
+                    "size": 43,
+                    "quantity": 45
+                },
+                {
+                    "size": 44,
+                    "quantity": 99
+                },
+                {
+                    "size": 45,
+                    "quantity": 200
+                },
+                {
+                    "size": 46,
+                    "quantity": 300
+                }
+            ],
+            "img": "",
+            "userId": "6494a4e83bd3462dd4bc85a9"
+        },
+        {
+            "_id": "654f8f33de7f55cd3a6ccc5b",
+            "title": "Jeans",
+            "subtitle": "Brown",
+            "description": "Brand new jeans with fresh color of brown.",
+            "brand": "JACK&JONES",
+            "category": "Pants",
+            "gender": "Male",
+            "price": 199,
+            "sizeQuantity": [
+                {
+                    "size": 28,
+                    "quantity": 80
+                },
+                {
+                    "size": 29,
+                    "quantity": 140
+                },
+                {
+                    "size": 30,
+                    "quantity": 120
+                },
+                {
+                    "size": 31,
+                    "quantity": 0
+                },
+                {
+                    "size": 32,
+                    "quantity": 0
+                }
+            ],
+            "img": "",
+            "userId": "648d6d9832b6ab2296a6c2dd"
+        },
+        {
+            "_id": "654f91cbaab0a0ed412622d5",
+            "title": "Poliester underwear",
+            "subtitle": "Red",
+            "description": "Poliester underwear let you move freely, made with good quality.",
+            "brand": "JACK&JONES",
+            "category": "Underwear",
+            "gender": "Male",
+            "price": 49,
+            "sizeQuantity": [
+                {
+                    "size": "XS",
+                    "quantity": 0
+                },
+                {
+                    "size": "S",
+                    "quantity": 95
+                },
+                {
+                    "size": "M",
+                    "quantity": 140
+                },
+                {
+                    "size": "L",
+                    "quantity": 120
+                }
+            ],
+            "img": "",
+            "userId": "6494a4e83bd3462dd4bc85a9"
+        },
+        {
+            "_id": "654fdce0b1f3c42bf83eab1a",
+            "title": "Halloween T-shirt",
+            "subtitle": "Black",
+            "description": "Exclusive T-shirt for Halloween.",
+            "brand": "Terminal X",
+            "category": "Shirts",
+            "gender": "Unisex",
+            "price": 89,
+            "sizeQuantity": [
+                {
+                    "size": "XS",
+                    "quantity": 150
+                },
+                {
+                    "size": "S",
+                    "quantity": 0
+                },
+                {
+                    "size": "M",
+                    "quantity": 0
+                },
+                {
+                    "size": "L",
+                    "quantity": 90
+                }
+            ],
+            "img": "",
+            "userId": "6504a4e32bd3462dd4bc74b6"
+        },
+        {
+            "_id": "654fdebea5f3a51846ec0123",
+            "title": "Jeans",
+            "subtitle": "Blue",
+            "description": "Brand new jeans with fresh color of blue.",
+            "brand": "JACK&JONES",
+            "category": "Pants",
+            "gender": "Unisex",
+            "price": 169,
+            "sizeQuantity": [
+                {
+                    "size": 28,
+                    "quantity": 80
+                },
+                {
+                    "size": 29,
+                    "quantity": 140
+                },
+                {
+                    "size": 30,
+                    "quantity": 120
+                },
+                {
+                    "size": 31,
+                    "quantity": 300
+                },
+                {
+                    "size": 32,
+                    "quantity": 300
+                }
+            ],
+            "img": "",
+            "userId": "6504a4e32bd3462dd4bc74b6"
+        },
+        {
+            "_id": "",
+            "title": "Eagle T-shirt",
+            "subtitle": "American Eagle",
+            "description": "Brand new basic T-shirt with eagle drawn.",
+            "brand": "American Eagle",
+            "category": "Shirts",
+            "gender": "Male",
+            "price": 69,
+            "sizeQuantity": [
+                {
+                    "size": "S",
+                    "quantity": 200
+                },
+                {
+                    "size": "M",
+                    "quantity": 600
+                },
+                {
+                    "size": "L",
+                    "quantity": 600
+                },
+                {
+                    "size": "XL",
+                    "quantity": 600
+                },
+                {
+                    "size": "XXL",
+                    "quantity": 150
+                }
+            ],
+            "img": "",
+            "userId": "6504a4e32bd3462dd4bc74b6"
+        },
+        {
+            "_id": "",
+            "title": "Eagle T-shirt",
+            "subtitle": "American Eagle",
+            "description": "Brand new basic T-shirt with eagle drawn.",
+            "brand": "American Eagle",
+            "category": "Shirts",
+            "gender": "Male",
+            "price": 69,
+            "sizeQuantity": [
+                {
+                    "size": "S",
+                    "quantity": 200
+                },
+                {
+                    "size": "M",
+                    "quantity": 600
+                },
+                {
+                    "size": "L",
+                    "quantity": 600
+                },
+                {
+                    "size": "XL",
+                    "quantity": 600
+                },
+                {
+                    "size": "XXL",
+                    "quantity": 150
+                }
+            ],
+            "img": "",
+            "userId": "6504a4e32bd3462dd4bc74b6"
+        }
+    ]
+}

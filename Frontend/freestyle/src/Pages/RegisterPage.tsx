@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
 
-    const [user, setUser] = useState<User>({ firstname: '', lastname: '', email: '', phone: '', password: '', biz: false });
+    const [user, setUser] = useState<User>({} as User);
     const [errors, setError] = useState<string[]>([]);
     const [serverError, setServerError] = useState('');
 

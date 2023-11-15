@@ -45,7 +45,6 @@ router.get('/:email', async (req, res) => {
 
         // Store token and expiration in the database
         const user = new resetPasswordModel({ email: email, token: token, expires: expires });
-        console.log(user);
         await user.save();
 
         //Send mail
@@ -79,7 +78,6 @@ router.post('/', async (req, res) => {
 
         const valRes = resetPasswordModel.validatePost({ newPassword }); // synchronized method for running validations
         if (valRes.error) {
-            console.log(valRes.error);
             return res.status(400).send(valRes.error);
         }
 
@@ -94,7 +92,6 @@ router.post('/', async (req, res) => {
 
         return res.status(200).send('Password reset successful');
     } catch (err) {
-        console.log(err.message);
         res.status(500).send(err.message);
     }
 })

@@ -21,6 +21,8 @@ const baselineValidation = {
     img: JOI.string().dataUri(),
     imageAlt: JOI.string(),
     userId: JOI.string().required(),
+    _id: JOI.allow(),
+    __v: JOI.allow()
 };
 
 

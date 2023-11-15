@@ -14,7 +14,7 @@ export interface User {
     isAdmin?: boolean;
     favoriteProducts?: Array<string>;
     cartProducts?: Array<ProductQuantity>;
-    status?: 'Active' | 'Expired' | 'Blocked';
+    status: 'Active' | 'Expired' | 'Blocked';
 }
 
 export interface LoginUser {
