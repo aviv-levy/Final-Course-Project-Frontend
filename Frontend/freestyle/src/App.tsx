@@ -30,6 +30,10 @@ import Loading from './Components/Loading';
 import OrdersPage from './Pages/OrdersPage';
 import AdminPage from './Pages/AdminPage';
 import EditProductPage from './Pages/EditProductPage';
+import AdminRouteGuard from './auth/AdminRouteGuard';
+import BizRouteGuard from './auth/BizRouteGuard';
+import LoginRouteGurard from './auth/LoginRouteGuard';
+import RouteGuard from './auth/RouteGuard';
 
 
 export const UserContext = createContext<context | null>(null);
@@ -82,18 +86,18 @@ function App() {
                   <Route path='/women' element={<GenderPage />} />
                   <Route path='/men/:category' element={<ProductsPage />} />
                   <Route path='/women/:category' element={<ProductsPage />} />
-                  <Route path='/login' element={<LoginPage />} />
+                  <Route path='/login' element={<LoginRouteGurard><LoginPage /></LoginRouteGurard>} />
                   <Route path='/register' element={<RegisterPage />} />
-                  <Route path='/reset-password/:token' element={<ResetPasswordPage />} />
-                  <Route path='/manageproducts' element={<ManageProductsPage />} />
-                  <Route path='/manageproducts/addProduct' element={<AddProductPage />} />
-                  <Route path='/orders' element={<OrdersPage />} />
-                  <Route path='/favorites' element={<FavoritesPage />} />
-                  <Route path='/cart' element={<CartPage />} />
-                  <Route path='/account/:userId' element={<EditUserPage />} />
+                  <Route path='/reset-password/:token' element={<LoginRouteGurard><ResetPasswordPage /></LoginRouteGurard>} />
+                  <Route path='/manageproducts' element={<BizRouteGuard><ManageProductsPage /></BizRouteGuard>} />
+                  <Route path='/manageproducts/addProduct' element={<BizRouteGuard><AddProductPage /></BizRouteGuard>} />
+                  <Route path='/orders' element={<RouteGuard><OrdersPage /></RouteGuard>} />
+                  <Route path='/favorites' element={<RouteGuard><FavoritesPage /></RouteGuard>} />
+                  <Route path='/cart' element={<RouteGuard><CartPage /></RouteGuard>} />
+                  <Route path='/account/:userId' element={<RouteGuard><EditUserPage /></RouteGuard>} />
                   <Route path='/product/:productId' element={<ProductPage />} />
-                  <Route path='/editProduct/:productId' element={<EditProductPage />} />
-                  <Route path='/admin' element={<AdminPage />} />
+                  <Route path='/editProduct/:productId' element={<BizRouteGuard><EditProductPage /></BizRouteGuard>} />
+                  <Route path='/admin' element={<AdminRouteGuard><AdminPage /></AdminRouteGuard>} />
                   <Route path='/404' element={<Error404Page />} />
                 </Routes>
               </PayPalScriptProvider>
