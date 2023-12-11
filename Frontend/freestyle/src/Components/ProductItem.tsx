@@ -1,9 +1,9 @@
 import '../CSS/Product.css'
-import { faEdit, faHeart, faTrash, faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faHeart, faTrash, faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import { addToCart, deleteProduct, likeProduct, removeFromCart } from '../Services/ApiService';
+import { deleteProduct, likeProduct } from '../Services/ApiService';
 import { UserContext } from '../App';
 import { Product, SizeQuantity } from '../Services/Interfaces';
 import SelectSizeWindow from './SelectSizeWindow';
@@ -16,7 +16,6 @@ interface Props {
 
 function ProductItem({ product, addProduct }: Props) {
     const [like, setLike] = useState(false);
-    const [cart, setCart] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
     const [showSelectSize, setShowSelectSize] = useState(false);
     const [sizeQuantity, setSizeQuantity] = useState<SizeQuantity>();
@@ -36,24 +35,6 @@ function ProductItem({ product, addProduct }: Props) {
             .catch((err) => { if (err) return; })
     }
 
-    //Add product from cart.
-    async function handleAddCart() {
-        setCart(!cart);
-        await addToCart(product._id, sizeQuantity)
-            .then((user) => {
-                userDetails?.setUserDetails(user)
-            })
-            .catch((err) => { if (err) return; })
-    }
-
-    //Remove product from cart.
-    async function handleRemoveCart() {
-        setCart(!cart);
-        await removeFromCart(product._id).then((user) => {
-            userDetails?.setUserDetails(user)
-        })
-            .catch((err) => { if (err) return; })
-    }
 
     //Delete card handle button.
     async function handleDelete() {
@@ -68,10 +49,7 @@ function ProductItem({ product, addProduct }: Props) {
             if (item === product._id)
                 setLike(true);
         })
-        userDetails?.userDetails?.cartProducts?.forEach((item) => {
-            if (item.productId === product._id)
-                setCart(true);
-        })
+
         // eslint-disable-next-line
     }, [])
 
@@ -114,9 +92,9 @@ function ProductItem({ product, addProduct }: Props) {
                                                 }
                                                 <div className="w-100 d-flex justify-content-center">
                                                     <div className="product-options d-flex justify-content-evenly pt-1">
-                                                        <button onClick={!cart ? () => setShowSelectSize(true) : handleRemoveCart} className='btn border-0 text-white d-flex flex-column align-items-center p-1'>
-                                                            <FontAwesomeIcon icon={faCartShopping} className={'text-white'} />
-                                                            <span className='product-options-color'>{!cart ? 'Add to Cart' : 'Remove'}</span>
+                                                        <button onClick={() => setShowSelectSize(true)} className='btn border-0 text-white d-flex flex-column align-items-center p-1'>
+                                                            <FontAwesomeIcon icon={faEye} className={'text-white'} />
+                                                            <span className='product-options-color'>Preview</span>
                                                         </button>
                                                         <button onClick={handleLike} className='btn border-0 text-white d-flex flex-column align-items-center p-1'>
 

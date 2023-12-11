@@ -1,5 +1,6 @@
 import Modal from 'react-modal';
 import { Product } from '../Services/Interfaces';
+import ViewProduct from './ViewProduct';
 
 
 interface Props {
@@ -25,17 +26,7 @@ function SelectSizeWindow({ product, setShowSelectSize }: Props) {
                 <button onClick={closeModal} className='bg-white border-0'>X</button>
             </div>
 
-            <div className="container">
-                <div className="row">
-                    <div className='col-md-5'>
-                        <img src={product.img} alt={product.imageAlt} className='img-thumbnail' />
-                    </div>
-                    <div className='col-md'>
-                        
-                    </div>
-                </div>
-
-            </div>
+            <ViewProduct product={product} />
         </Modal>
     );
 }

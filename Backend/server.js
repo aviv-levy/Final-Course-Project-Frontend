@@ -52,7 +52,7 @@ app.use('/user', verifyToken, userRouter);
 app.use('/products', productRouter);
 app.use('/resetAccount', resetAccountRouter);
 app.use('/contact', contactUsRouter);
-app.use('/orders', ordersRouter);
+app.use('/orders', verifyToken , ordersRouter);
 
 
 //http://localhost:4500/initilaize

@@ -1,3 +1,5 @@
+import { OrderResponseBody } from "@paypal/paypal-js";
+
 export interface User {
     userDetails?: User,
     _id?: string;
@@ -70,6 +72,15 @@ export interface OrderProduct {
     sizeQuantity: SizeQuantity
 }
 
+export interface OrderHistory{
+    _id: string,
+    products: Array<OrderProduct>,
+    address: Address,
+    paypalPayment: OrderResponseBody,
+    orderNumber: number,
+    status: string
+}
+
 export interface ContactUs {
     name: string,
     email: string,
@@ -82,10 +93,6 @@ export interface context {
     setIsLoggedIn: Function,
     userDetails?: User,
     setUserDetails: Function,
-    // filteredCards?: Array<Product>,
-    // setFilteredCards: Function,
-    // darkMode?: boolean,
-    // setDarkMode: Function
 }
 
 export interface loading {
@@ -101,4 +108,5 @@ export interface CopyCardsContext {
 export interface PaypalDetails {
     address: Address,
     orderProducts?: Array<OrderProduct>
+    totalPrice: number
 }

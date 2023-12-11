@@ -87,8 +87,9 @@ router.get('/getCartProducts', verifyToken, async (req, res) => {
 //http://localhost:4500/products/updateProduct
 router.put('/updateProduct',verifyToken ,async (req, res) => {
     try {
-        const valRes = ProductModel.validatePost(req.body);
+        const valRes = ProductModel.validatePut(req.body);
         if (valRes.error){
+            console.log(valRes.error);
             return res.status(400).send(valRes.error);
         }
 

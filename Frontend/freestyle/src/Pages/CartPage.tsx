@@ -7,6 +7,7 @@ import { getCartProducts } from "../Services/ApiService";
 import PaypalCheckoutButton from "../Components/PaypalCheckoutButton";
 import StyledInput from "../Components/StyledInput";
 import { addressValidation } from "../Services/Validations";
+import { toast } from "react-toastify";
 
 
 export const CartContext = createContext<OrderProduct>({} as OrderProduct);
@@ -19,6 +20,7 @@ function CartPage() {
     const [showCheckout, setShowCheckout] = useState(false);
     const [showPayment, setShowPayment] = useState(false);
     const [errors, setError] = useState<string[]>([]);
+    const [stockErrors, setStockError] = useState<string[]>([]);
 
     const userDetails = useContext(UserContext);
     const cartProducts = useContext(UserContext)?.userDetails?.cartProducts;
@@ -27,7 +29,7 @@ function CartPage() {
     function handleShowPayment() {
         if (!addressValidation(setError, address))
             return;
-
+        
         setShowPayment(true);
     }
 
@@ -49,6 +51,9 @@ function CartPage() {
             setOrderProducts(filteredProducts)
         }
 
+        setStockError([])
+
+
         getProducts().catch((err) => {
             if (err) {
                 return;
@@ -57,6 +62,22 @@ function CartPage() {
         // eslint-disable-next-line
     }, [userDetails?.userDetails?.cartProducts])
 
+    function handleCheckout() {
+        const stockErrorsArr: string[] = [];
+        let isInStock = true;
+        orderProducts?.forEach((orderProduct,index) => {
+            orderProduct.product.sizeQuantity.forEach((productSizes) => {
+                if (orderProduct.sizeQuantity.quantity > productSizes.quantity && orderProduct.sizeQuantity.size === productSizes.size) {
+                    toast.error("Not enough in stock");
+                    stockErrorsArr[index] = "Not enough in stock";
+                    isInStock = false;
+                }
+            })
+        })
+        setStockError(stockErrorsArr);
+        if (isInStock)
+            setShowCheckout(true);
+    }
 
     return (
         <>
@@ -68,14 +89,14 @@ function CartPage() {
 
                             orderProducts?.map((product, index) =>
                                 <CartContext.Provider key={product.product._id} value={product}>
-                                    <CartProduct key={index} />
+                                    <CartProduct key={index} stockErr={stockErrors[index]}/>
                                 </CartContext.Provider>
                             )
                         }
 
                         <div className="d-flex justify-content-between mx-4">
                             <span className="fs-4"><strong>Total: {totalPrice}₪</strong></span>
-                            <button onClick={() => setShowCheckout(true)} className="btn btn-dark px-5" disabled={orderProducts?.length === 0}>Checkout</button>
+                            <button onClick={handleCheckout} className="btn btn-dark px-5" disabled={orderProducts?.length === 0}>Checkout</button>
                         </div>
                     </div>
                     :
@@ -96,7 +117,7 @@ function CartPage() {
                                 !showPayment ?
                                     <button onClick={handleShowPayment} className="btn btn-dark">Payement</button>
                                     :
-                                    <PaypalAddressContext.Provider value={{ address, orderProducts }}>
+                                    <PaypalAddressContext.Provider value={{ address, orderProducts, totalPrice }}>
                                         <PaypalCheckoutButton />
                                     </PaypalAddressContext.Provider>
                             }

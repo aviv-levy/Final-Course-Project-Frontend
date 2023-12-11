@@ -14,7 +14,7 @@ interface Props {
 function CountButton({ size, amount, removeButton }: Props) {
 
     const sizesContext = useContext(AddSizeContext);
-    const [quantity, setQuantity] = useState(amount || 1)
+    const [quantity, setQuantity] = useState(amount || 0)
 
     //Set new size and quantity to a product
     function setSize(newQuantity: number) {

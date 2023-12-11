@@ -28,3 +28,8 @@ Business users:
 Regular user:
 `Username: nir@gmail.com`
 `Password: Aa!12345`
+
+## Paypal testing account for buying
+
+`Username: sb-43bffw27662593@personal.example.com`
+`Password: %cJ*3>r7`

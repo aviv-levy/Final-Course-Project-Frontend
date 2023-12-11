@@ -8,8 +8,11 @@ import { UserContext } from "../App";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
+interface Props{
+    stockErr: string
+}
 
-function CartProduct() {
+function CartProduct({stockErr}:Props) {
 
     const [isFavorite, setIsFavorite] = useState(false);
 
@@ -89,6 +92,7 @@ function CartProduct() {
                 </div>
 
             </div>
+            <div className="text-danger ms-5">{stockErr}</div>
             <hr />
         </>
     );

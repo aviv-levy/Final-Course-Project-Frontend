@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Product, LoginUser, User, ContactUs, SizeQuantity, Address, OrderProduct } from "./Interfaces";
+import { Product, LoginUser, User, ContactUs, SizeQuantity, Address, OrderProduct, OrderHistory } from "./Interfaces";
 import { getToken } from "../auth/TokenManager";
 import { OrderResponseBody } from "@paypal/paypal-js";
 
@@ -478,5 +478,42 @@ export async function createOrder(paypalPayment?: OrderResponseBody, address?: A
     } catch (error: any) {
         const httpStatusCode = error.response.data
         throw httpStatusCode;
+    }
+}
+
+// Get Orders history of user
+export async function getOrdersHistory(): Promise<Array<OrderHistory>> {
+    try {
+        const result = await axios.get<Array<OrderHistory>>(serverUrl + `orders/getOrdersHistory`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + getToken()
+            },
+        })
+
+        return result.data;
+
+    } catch (error: any) {
+        const errorText = error.response.data
+        throw errorText;
+    }
+}
+
+//Api request for today currency from ILS to USD
+export async function convertILStoUSD(num:number):Promise<string> {
+    const url = 'https://v6.exchangerate-api.com/v6/93b590481be1d1634e4e994f/latest/USD';
+    const options = {
+        method: 'GET'
+    };
+    
+    try {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        const total = num / Number(result.conversion_rates.ILS);
+        
+        return total.toString().replace(/\.\d*/g, '');
+    } catch (error) {
+        console.error(error);
+        throw "Couldn't fetch convertion";
     }
 }

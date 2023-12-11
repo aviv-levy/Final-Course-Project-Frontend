@@ -41,14 +41,14 @@ function PaypalCheckoutButton() {
         //if the response is error
         // alert
     }
-
     if (paidFor) {
         // Display success message, modal or redirect use to succes page
-        toast.success('Thank you for your purchase');
+        // toast.success('Thank you for your purchase');
     }
 
     if (error)
         toast.error(error);
+
 
     return (
         <>
@@ -62,7 +62,8 @@ function PaypalCheckoutButton() {
                         purchase_units: [
                             {
                                 amount: {
-                                    value: "50"
+                                    value: details.totalPrice.toString(),
+                                    //value: '2'
                                 }
                             }
                         ]
