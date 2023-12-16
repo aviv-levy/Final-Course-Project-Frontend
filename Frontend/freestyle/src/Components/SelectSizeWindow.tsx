@@ -19,7 +19,7 @@ function SelectSizeWindow({ product, setShowSelectSize }: Props) {
         <Modal
             isOpen={true}
             onRequestClose={closeModal}
-            ariaHideApp={true}
+            ariaHideApp={false}
             contentLabel="Modal"
         >
             <div className='text-end '>

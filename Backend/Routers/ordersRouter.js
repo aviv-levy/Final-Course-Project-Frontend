@@ -15,10 +15,10 @@ router.post('/createOrder', async (req, res) => {
         if (valRes.error)
             return res.status(400).send(valRes.error);
 
-        const orderCount = await CountModel.findOneAndUpdate({ title: 'orderCounter' }, { $inc: { orderCounter: 1 } }, { new: true })
+        let orderCount = await CountModel.findOneAndUpdate({ title: 'orderCounter' }, { $inc: { orderCounter: 1 } }, { new: true })
         if (orderCount === null) {
-            const count = new CountModel({ orderCounter: 10003 })
-            await count.save();
+            orderCount = new CountModel({ orderCounter: 10003 })
+            await orderCount.save();
         }
 
         const order = new OrderModel({

@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Development server
 
-Run `node server.js` for a Nodejs server. Navigate to `http://localhost:4500/initilaize` to initilaize data in monogoDB.
+Run `node server.js` for a Nodejs server. Navigate to `http://localhost:4500/initialize` to initilaize data in monogoDB.
 
 Then Run `npm start` for react development mode. Navigate to `http://localhost:3000` to see the site.
 

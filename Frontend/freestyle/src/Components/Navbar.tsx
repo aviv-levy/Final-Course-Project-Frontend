@@ -9,7 +9,6 @@ import { UserContext } from '../App';
 
 function Navbar() {
 
-    const [search, setSearch] = useState('');
     const [favoriteAmount, setFavoriteAmount] = useState(0);
     const [cartAmount, setCartAmount] = useState(0);
 
@@ -67,16 +66,6 @@ function Navbar() {
                     </ul>
                     <div className="d-flex">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-center">
-                            <li className="nav-item">
-                                <div className="form-group has-search">
-                                    <span className="fa fa-search form-control-feedback"></span>
-                                    <input
-                                        type="text"
-                                        className='form-control bg-light'
-                                        placeholder="Search"
-                                        onChange={(e) => setSearch(e.target.value)} />
-                                </div>
-                            </li>
                             {
                                 isLoggedIn?.isLoggedIn &&
                                 <>

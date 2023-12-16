@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Counterchema = new mongoose.Schema({
+const Counterschema = new mongoose.Schema({
     title:{
         type: String,
         default: 'orderCounter'
@@ -9,6 +9,6 @@ const Counterchema = new mongoose.Schema({
 })
 
 
-const CounterModel = mongoose.model("CounterModel", Counterchema, "counters");
+const CounterModel = mongoose.model("CounterModel", Counterschema, "counters");
 
 module.exports = CounterModel;
