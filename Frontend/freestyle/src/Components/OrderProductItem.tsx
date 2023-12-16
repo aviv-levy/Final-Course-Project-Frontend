@@ -15,11 +15,12 @@ function OrderProductItem({orderProduct}:Props) {
                 <div className="col-8">
                     <div><strong>{orderProduct.product.title}</strong></div>
                     <div>{orderProduct.product.subtitle}</div>
+                    <div>Quantity: {orderProduct.sizeQuantity.quantity}</div>
                     <div></div>
                 </div>
                 <div className="col-3">
                     <div className="d-flex justify-content-end">
-                        {orderProduct.product.price}₪
+                        {orderProduct.product.price * orderProduct.sizeQuantity.quantity}₪
                     </div>
                 </div>
             </div>
