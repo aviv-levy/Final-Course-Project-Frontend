@@ -28,7 +28,7 @@ function OrdersPage() {
                 <Title title="My orders" />
                 {
                     ordersHistory?.map(order =>
-                        <OrdersLayout key={order._id}>
+                        <OrdersLayout key={order._id} order={order}>
                             {order.products.map((orderProduct,index) =>
                                 <OrderProductItem key={index} orderProduct={orderProduct} />
                             )}

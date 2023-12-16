@@ -17,7 +17,6 @@ interface Props {
 function StyledInput({ type, inputValue, placeholder, setValueFunc, inputParam, id, errorText, checked }: Props) {
 
     const [inputValueState, setInputValueState] = useState(inputValue);
-    const [check,setCheck] = useState(checked)
 
     return (
         <>

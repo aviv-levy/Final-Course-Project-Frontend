@@ -6,6 +6,7 @@ const orderSchema = new mongoose.Schema({
     address: Object,
     paypalPayment: Object,
     orderNumber: Number,
+    buyer_id: String,
     status: String
 })
 

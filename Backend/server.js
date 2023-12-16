@@ -55,9 +55,9 @@ app.use('/contact', contactUsRouter);
 app.use('/orders', verifyToken , ordersRouter);
 
 
-//http://localhost:4500/initilaize
+//http://localhost:4500/initialize
 //Initilaize Database with data
-app.get('/initilaize', async (req, res) => {
+app.get('/initialize', async (req, res) => {
     try {
         let myData = JSON.parse(fs.readFileSync("./initalizeData.json").toString());
 

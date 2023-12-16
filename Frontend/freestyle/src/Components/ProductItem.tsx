@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { deleteProduct, likeProduct } from '../Services/ApiService';
 import { UserContext } from '../App';
-import { Product, SizeQuantity } from '../Services/Interfaces';
+import { Product } from '../Services/Interfaces';
 import SelectSizeWindow from './SelectSizeWindow';
 
 
@@ -18,7 +18,6 @@ function ProductItem({ product, addProduct }: Props) {
     const [like, setLike] = useState(false);
     const [isDeleted, setIsDeleted] = useState(false);
     const [showSelectSize, setShowSelectSize] = useState(false);
-    const [sizeQuantity, setSizeQuantity] = useState<SizeQuantity>();
 
     const navigate = useNavigate();
 

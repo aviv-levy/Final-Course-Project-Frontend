@@ -500,20 +500,20 @@ export async function getOrdersHistory(): Promise<Array<OrderHistory>> {
 }
 
 //Api request for today currency from ILS to USD
-export async function convertILStoUSD(num:number):Promise<string> {
-    const url = 'https://v6.exchangerate-api.com/v6/93b590481be1d1634e4e994f/latest/USD';
-    const options = {
-        method: 'GET'
-    };
+// export async function convertILStoUSD(num:number):Promise<string> {
+//     const url = 'https://v6.exchangerate-api.com/v6/93b590481be1d1634e4e994f/latest/USD';
+//     const options = {
+//         method: 'GET'
+//     };
     
-    try {
-        const response = await fetch(url, options);
-        const result = await response.json();
-        const total = num / Number(result.conversion_rates.ILS);
+//     try {
+//         const response = await fetch(url, options);
+//         const result = await response.json();
+//         const total = num / Number(result.conversion_rates.ILS);
         
-        return total.toString().replace(/\.\d*/g, '');
-    } catch (error) {
-        console.error(error);
-        throw "Couldn't fetch convertion";
-    }
-}
+//         return total.toString().replace(/\.\d*/g, '');
+//     } catch (error) {
+//         console.error(error);
+//         throw "Couldn't fetch convertion";
+//     }
+// }

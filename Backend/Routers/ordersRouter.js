@@ -46,11 +46,14 @@ router.post('/createOrder', async (req, res) => {
 
 
 // http://localhost:4500/orders/getOrdersHistory
-router.post('/getOrdersHistory', async (req, res) => {
+router.get('/getOrdersHistory', async (req, res) => {
     try {
 
-        res.status(201).send('Order has been created')
+        const Orders = await OrderModel.find({ buyer_id: req.id });
+        if (Orders === null)
+            res.status(404).send('not found any')
 
+        res.status(200).json(Orders);
     } catch (err) {
         console.log(err.message);
         res.status(500).send(err.message);

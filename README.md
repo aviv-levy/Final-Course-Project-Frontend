@@ -26,6 +26,7 @@ Business users:
 `Password: Aa!12345`
 
 Regular user:
+
 `Username: nir@gmail.com`
 `Password: Aa!12345`
 

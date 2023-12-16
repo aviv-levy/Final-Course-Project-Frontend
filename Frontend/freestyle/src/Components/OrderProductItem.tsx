@@ -1,5 +1,3 @@
-import { useState } from "react";
-import menUnderWearImg from "../Images/Categories/menunderwear.jpg"
 import { OrderProduct } from "../Services/Interfaces";
 
 interface Props{
@@ -12,7 +10,7 @@ function OrderProductItem({orderProduct}:Props) {
 
             <div className="row">
                 <div className="col-1">
-                    <img src={menUnderWearImg} className="img-fluid rounded img-size" />
+                    <img src={orderProduct.product.img} className="img-fluid rounded img-size" alt="" />
                 </div>
                 <div className="col-8">
                     <div><strong>{orderProduct.product.title}</strong></div>
@@ -21,7 +19,7 @@ function OrderProductItem({orderProduct}:Props) {
                 </div>
                 <div className="col-3">
                     <div className="d-flex justify-content-end">
-                        {orderProduct.product.price}
+                        {orderProduct.product.price}₪
                     </div>
                 </div>
             </div>
