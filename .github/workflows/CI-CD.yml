@@ -82,3 +82,8 @@ jobs:
           else
             echo "Build directory not found"; exit 1
           fi
+      - name: Show Site URL 🌐
+        run: |
+          echo "✅ Deployment finished!"
+          echo "🌍 Your app is live at:"
+          echo "http://devops-final-project-frontend.s3-website-eu-west-1.amazonaws.com"
