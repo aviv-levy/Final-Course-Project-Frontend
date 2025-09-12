@@ -11,7 +11,7 @@ function HomePage() {
                     <div className="col-md position-relative text-center">
                         <Link to='/men'>
                             <div className="z-1 position-absolute top-50 start-50 translate-middle text-white fs-1">
-                                <strong>MENNNNNN</strong>
+                                <strong>MEN</strong>
                             </div>
                             <img
                                 className="img-thumbnail z-0 pic border-0 h-100"
