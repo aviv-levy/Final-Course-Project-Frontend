@@ -1,0 +1,84 @@
+name: Build & Deploy to S3
+
+on:
+    push:
+      branches: [main]
+    workflow_dispatch:
+      inputs:
+        environment:
+          description: 'Environment to deploy to'
+          required: true
+          default: 'Prod'
+          type: choice
+          options:
+            - Prod
+
+permissions:
+  contents: read
+
+env:
+  # If your React build output is "dist" (Vite) change BUILD_DIR to "dist"
+  BUILD_DIR: build
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'          # set to your project’s Node version
+          cache: 'npm'                # or 'yarn' / 'pnpm' if you use those
+
+      - name: Install deps
+        run: |
+            npm install
+
+      - name: Build
+        run: |
+          if [ -f package.json ]; then
+            # If your build script differs, update here
+            npm run build
+          fi
+          # Detect common build output dir (CRA=build, Vite=dist)
+          if [ -d dist ]; then echo "BUILD_DIR=dist" >> $GITHUB_ENV; fi
+
+      - name: Configure AWS credentials 🔐
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: arn:aws:iam::017923816312:role/GithubActionsAvivLevyDeployRole
+
+      - name: Upload to S3 (static site)
+        run: |
+          # Long-cache static assets; no-cache for HTML for SPA freshness
+          # Upload assets first (so index.html is last and references ready files)
+          if [ -d "${{ env.BUILD_DIR }}" ]; then
+            aws s3 sync "${{ env.BUILD_DIR }}/" "s3://devops-final-project-frontend/" \
+              --delete \
+              --exclude "index.html" \
+              --exclude "*.html" \
+              --cache-control "public,max-age=31536000,immutable" \
+              --acl public-read
+
+            # Upload HTML (no-cache)
+            aws s3 cp "${{ env.BUILD_DIR }}/" "s3://devops-final-project-frontend/" \
+              --recursive \
+              --exclude "*" \
+              --include "*.html" \
+              --cache-control "no-cache" \
+              --content-type "text/html; charset=utf-8" \
+              --acl public-read
+
+            # Ensure index.html exists
+            aws s3 cp "${{ env.BUILD_DIR }}/index.html" "s3://devops-final-project-frontend/index.html" \
+              --cache-control "no-cache" \
+              --content-type "text/html; charset=utf-8" \
+              --acl public-read
+          else
+            echo "Build directory not found"; exit 1
+          fi

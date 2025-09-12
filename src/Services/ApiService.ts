@@ -6,7 +6,7 @@ import { OrderResponseBody } from "@paypal/paypal-js";
 
 
 // const serverUrl = 'http://localhost:4500/';
-const serverUrl = 'http://5.182.18.44:4500/';
+const serverUrl = 'http://ae385f8ba469246c5b46342b84ff5e0e-735847438.eu-west-1.elb.amazonaws.com/';
 
 
 // Return true if user is logged in.
