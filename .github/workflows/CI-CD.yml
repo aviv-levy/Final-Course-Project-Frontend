@@ -52,7 +52,7 @@ jobs:
       - name: Configure AWS credentials 🔐
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: eu-west-1
           role-to-assume: arn:aws:iam::017923816312:role/GithubActionsAvivLevyDeployRole
 
       - name: Upload to S3 (static site)
