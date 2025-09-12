@@ -14,6 +14,7 @@ on:
             - Prod
 
 permissions:
+  id-token: write
   contents: read
 
 env:
