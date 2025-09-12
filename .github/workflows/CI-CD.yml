@@ -31,7 +31,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'          # set to your project’s Node version
+          node-version: '18'          # set to your project’s Node version
           cache: 'npm'                # or 'yarn' / 'pnpm' if you use those
 
       - name: Install deps
