@@ -20,11 +20,11 @@ permissions:
 env:
   # If your React build output is "dist" (Vite) change BUILD_DIR to "dist"
   BUILD_DIR: build
-  environment: ENV
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: ENV
 
     steps:
       - name: Checkout
