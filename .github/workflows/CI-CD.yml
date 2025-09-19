@@ -20,6 +20,7 @@ permissions:
 env:
   # If your React build output is "dist" (Vite) change BUILD_DIR to "dist"
   BUILD_DIR: build
+  environment: ENV
 
 jobs:
   deploy:
@@ -32,10 +33,17 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'          # set to your project’s Node version
-          cache: 'npm'                # or 'yarn' / 'pnpm' if you use those
+          node-version: '18'         
+          cache: 'npm'    
 
-      - name: Install deps
+      - name: Create .env file from secrets
+        run: |
+          echo "🔧 Creating environment file..."
+          echo "REACT_APP_PAYPAL=${{ secrets.PAYPAL }}" > .env
+          echo "✅ Environment file created successfully!"
+          cat .env  # Optional: Debug output (remove if you don't want to log secrets!)
+
+      - name: Install dependencies
         run: |
             npm install
 
