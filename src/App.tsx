@@ -76,7 +76,7 @@ function App() {
             <Navbar />
             <ToastContainer position='top-center' />
             <LoadingContext.Provider value={{ isLoading, setIsLoading }}>
-              <PayPalScriptProvider options={{"clientId": process.env.REACT_APP_PAYPAL_CLIENT_ID as string,currency: 'ILS'}}>
+              <PayPalScriptProvider options={{"clientId": "AXsu4y0f0Y70h6d9kXi4w5Zki8f-1uHDPvTHLFt9l3jyLjzBSHawKLrPOr9GRXYTR6AT85BraFff3vxP" as string,currency: 'ILS'}}>
                 <Routes>
 
                   <Route path='/' element={<HomePage />} />
